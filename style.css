@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;600;700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: #0A0A0A;
+    background-image:
+        radial-gradient(circle at center, rgba(10, 10, 10, 0.9) 0%, rgba(10, 10, 10, 0.55) 45%, rgba(10, 10, 10, 0) 85%),
+        url("../img/Honeycomb.svg");
+    background-repeat: no-repeat, no-repeat;
+    background-position: center center, center center;
+    background-attachment: fixed, fixed;
+    background-size: cover, cover;
+    color: #FFFFFF;
+    font-family: 'Source Code Pro', monospace, sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+body a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+body a:hover {
+    text-decoration: underline;
+}
+
+h1,
+h2 {
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.27em;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar ul {
+    margin: 0;
+    padding: 0.8rem 1rem;
+    list-style: none;
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.navbar li {
+    display: flex;
+    align-items: center;
+}
+
+.navbar button,
+.navbar a {
+    color: #ff0019;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.25rem;
+    background: transparent;
+    border: none;
+    font: inherit;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.navbar a:hover,
+.navbar a:focus {
+    background: rgba(255, 0, 0, 0.144);
+}
+
+.navbar .dropdown {
+    position: relative;
+}
+
+.navbar .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 220px;
+    background: rgba(10, 10, 10, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.35rem;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    z-index: 20;
+}
+
+.navbar .dropdown:hover .dropdown-menu,
+.navbar .dropdown:focus-within .dropdown-menu {
+    display: block;
+}
+
+.navbar .dropdown-menu li {
+    margin: 0;
+}
+
+.navbar .dropdown-menu a {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+}
+
+.hero {
+    min-height: 100vh;
+    padding: 4rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    background: linear-gradient(180deg, rgba(255, 0, 0, 0.15), rgba(10, 10, 10, 1));
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    padding-top: 100vh;
+}
+
+.page-section {
+    min-height: 100vh;
+    padding: 4rem 1.5rem;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    scroll-margin-top: 6rem;
+    background: rgba(18, 18, 18, 0.92);
+}
+
+.page-section:nth-of-type(even) {
+    background: rgba(25, 25, 25, 0.92);
+}
+
+.intro {
+    text-align: center;
+    max-width: 960px;
+}
+
+.intro h1 {
+    font-family: 'Orbitron', monospace, sans-serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    margin: 0 0 1rem;
+}
+
+.intro h2 {
+    font-family: 'Orbitron', monospace, sans-serif;
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    margin: 1rem 0 0;
+}
+
+.page-section h2 {
+    display: inline-block;
+    background: rgba(255, 0, 25, 0.4);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    margin: 0 0 1.5rem;
+    font-family: 'Orbitron', monospace, sans-serif;
+    font-size: clamp(1.75rem, 2vw, 2.5rem);
+    color: #ffffff;
+}
+
+.page-section p,
+.page-section ul {
+    max-width: 900px;
+    margin: 0 auto 1.5rem;
+    background: rgba(255, 0, 30, 0.5);
+    border: 1px solid rgba(255, 0, 25, 0.2);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.page-section p {
+    text-align: left;
+}
+
+.page-section ul {
+    padding-left: 1.5rem;
+}
+
+.page-section li {
+    margin-bottom: 0.8rem;
+}
+
+.page-section h3 {
+    font-size: 1.4rem;
+    margin-top: 0;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.skill-column {
+    padding: 1.5rem;
+}
+
+.skill-column h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.35rem;
+}
+
+.skill-column ul {
+    padding-left: 1.2rem;
+}
+
+
+
+@media (max-width: 800px) {
+    .page-section {
+        padding: 3rem 1rem;
+    }
+}
