@@ -9,7 +9,8 @@ Labsite v.1 - 2026-06-28
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portfolio of Daniel Doro Leão - Designer, Architect, and Urban Planner">
+    <meta name="description"
+        content="Red Lion Labs is the portfolio of Daniel Doro Leão - Software Developer, and Programming Designer,">
     <meta name="author" content="Daniel Doro Leão">
     <title>Red Lion - Daniel Doro Leão</title>
     <link href="style.css" rel="stylesheet">
@@ -17,12 +18,18 @@ Labsite v.1 - 2026-06-28
 </head>
 
 <body>
-    <nav class="navbar">
-        <ul>
+    <nav class="navbar" id="site-nav">
+        <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="main-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul id="main-menu">
             <li><a href="#summary">Summary</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#education">Education</a></li>
             <li><a href="#experience">Experience</a></li>
+            <li><a href="#github">GitHub Repos</a></li>
             <li><a href="#languages">Languages</a></li>
             <li><a href="#contacts">Contacts</a></li>
         </ul>
@@ -33,7 +40,7 @@ Labsite v.1 - 2026-06-28
             <h1>RED LION LABS</h1>
             <img src="img/RedLionLogo.svg" alt="Lion Red Logo" width="300">
             <h2>DANIEL DORO LEAO</h2>
-            <h3>SOFTWARE DEVELOPER | PROGRAM DESIGNER</h3>
+            <h3>SOFTWARE DEVELOPER | PROGRAMMING DESIGNER</h3>
         </div>
     </section>
 
@@ -108,6 +115,13 @@ Labsite v.1 - 2026-06-28
             </p>
         </section>
 
+        <section id="github" class="page-section">
+            <h2>GITHUB REPOSITORIES</h2>
+            <div id="github-repos">
+                <p>Loading repositories...</p>
+            </div>
+        </section>
+
         <section id="languages" class="page-section">
             <h2>LANGUAGES</h2>
             <ul>
@@ -131,6 +145,71 @@ Labsite v.1 - 2026-06-28
             <p>Ajax, ON</p>
         </section>
     </main>
+    <script>
+        const nav = document.getElementById('site-nav');
+        const toggle = document.querySelector('.menu-toggle');
+        const menu = document.getElementById('main-menu');
+
+        if (toggle) {
+            toggle.addEventListener('click', () => {
+                const isOpen = nav.classList.toggle('open');
+                toggle.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 900) {
+                        nav.classList.remove('open');
+                        toggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 900) {
+                    nav.classList.remove('open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        // Replace with your GitHub username
+        const username = 'danieldleao';
+
+        // GitHub API endpoint to fetch public repositories, sorted by most recently created
+        const apiUrl = `https://api.github.com/users/danieldleao/repos?sort=created&direction=desc`;
+
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(repos => {
+                const container = document.getElementById('github-repos');
+                container.innerHTML = ''; // Clear the loading message
+
+                // Loop through each repository and create HTML elements
+                repos.forEach(repo => {
+                    const repoElement = document.createElement('div');
+                    repoElement.style.marginBottom = '15px';
+                    repoElement.style.padding = '10px';
+                    repoElement.style.border = '1px solid #ccc';
+
+                    repoElement.innerHTML = `
+                    <h3><a href="${repo.html_url}" target="_blank">${repo.name}</a></h3>
+                    <p>${repo.description ? repo.description : 'No description provided.'}</p>
+                    <small>Language: ${repo.language ? repo.language : 'N/A'}</small>
+                `;
+                    container.appendChild(repoElement);
+                });
+            })
+            .catch(error => {
+                document.getElementById('github-repos').innerHTML = '<p>Error loading repositories.</p>';
+                console.error('Error fetching data:', error);
+            });
+    </script>
 </body>
 
 </html>
