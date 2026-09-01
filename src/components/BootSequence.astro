@@ -1,37 +1,202 @@
 ---
-// 3-Second Startup Logo Animation / Diagnostic Boot Sequence
+// High-Impact Screen-Size Startup Boot Presentation & Circuit Energy Sequence
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <div id="boot-sequence" class="boot-overlay" aria-label="System Boot Sequence">
-  <div class="boot-container">
-    <!-- Outer CAD Target Ring -->
-    <div class="boot-reticle">
+  <!-- Background High-Voltage Electrical Spark Canvas -->
+  <canvas id="boot-sparks-canvas" class="boot-sparks-canvas"></canvas>
+
+  <!-- Central High-Impact CAD Stage -->
+  <div class="boot-stage">
+    <!-- Ambient CAD Coordinate Framing -->
+    <div class="boot-cad-brackets">
+      <span class="cad-coord-tl">SYS_INIT // 43.8509° N, 79.0204° W</span>
+      <span class="cad-coord-tr">PROTOCOL: QUANTUM_CIRCUIT_v2.1</span>
+      <span class="cad-coord-bl">VOLTAGE: 480V // 3-PHASE</span>
+      <span class="cad-coord-br">STATE: CALIBRATING_NODES</span>
+    </div>
+
+    <!-- Outer Rotating CAD Reticle Rings -->
+    <div class="boot-reticle" aria-hidden="true">
       <div class="reticle-ring-outer"></div>
+      <div class="reticle-ring-mid"></div>
       <div class="reticle-ring-inner"></div>
-      <div class="reticle-axis-h"></div>
-      <div class="reticle-axis-v"></div>
+      <div class="reticle-crosshair-h"></div>
+      <div class="reticle-crosshair-v"></div>
     </div>
 
-    <!-- Geometric Red Lion Logo -->
-    <div class="boot-logo-box">
-      <img src={`${baseUrl}/Img/RedLionLogo-OutLine.svg`} alt="Red Lion Labs Vector Logo" class="boot-lion-img" />
+    <!-- Screen-Size Vector Circuit Lion -->
+    <div class="boot-logo-container">
+      <svg id="boot-circuit-svg" class="boot-circuit-svg" viewBox="0 0 992.13 1133.86" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="energyGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="hyperPulse" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="bigGlow" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="coreGlow" />
+            <feMerge>
+              <feMergeNode in="bigGlow" />
+              <feMergeNode in="coreGlow" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <linearGradient id="energyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FA0019" />
+            <stop offset="50%" stop-color="#FA9600" />
+            <stop offset="100%" stop-color="#FFFFFF" />
+          </linearGradient>
+        </defs>
+
+        <!-- Base Circuit Traces Group -->
+        <g class="circuit-base-layer">
+          <polygon class="circuit-trace thick" points="533.44 849.76 581.24 801.96 581.24 761.87 637.93 705.18 637.93 665.09 722.97 580.05 722.97 392.19 613.61 282.83 539.13 282.83 496.2 325.77 453.26 282.83 378.78 282.83 269.43 392.19 269.43 580.05 354.46 665.09 354.46 705.18 411.16 761.87 411.16 801.96 458.96 849.76 533.44 849.76"/>
+          <line class="circuit-trace thin" x1="354.46" y1="651.33" x2="420.88" y2="651.33"/>
+          <line class="circuit-trace thin" x1="357.31" y1="708.03" x2="477.58" y2="708.03"/>
+          <polyline class="circuit-trace thick" points="411.16 764.72 458.12 764.72 496.2 726.65 534.27 764.72 581.24 764.72"/>
+          <polyline class="circuit-trace thick" points="354.46 665.09 354.46 584.91 269.43 499.88"/>
+          <polyline class="circuit-trace thick" points="354.46 627.85 439.5 542.81 439.5 509.6 422.9 493 382.81 493 275.71 385.9"/>
+          <polyline class="circuit-trace thick" points="326.12 396.22 366.21 396.22 439.5 469.51"/>
+          <line class="circuit-trace thin" x1="637.93" y1="651.33" x2="571.51" y2="651.33"/>
+          <line class="circuit-trace thin" x1="635.08" y1="708.03" x2="514.82" y2="708.03"/>
+          <polygon class="circuit-nose" points="439.5 622.99 439.5 629.87 496.2 686.56 552.89 629.87 552.89 622.99 439.5 622.99"/>
+          <polyline class="circuit-trace thick" points="637.93 665.09 637.93 584.91 722.97 499.88"/>
+          <polyline class="circuit-trace thick" points="637.93 627.85 552.89 542.81 552.89 509.6 569.49 493 609.58 493 716.68 385.9"/>
+          <polyline class="circuit-trace thick" points="666.28 396.22 626.19 396.22 552.89 469.51"/>
+          <line class="circuit-trace thick" x1="496.2" y1="424.56" x2="496.2" y2="165.42"/>
+          <polyline class="circuit-trace thick" points="453.26 282.83 339.87 169.44 251.64 169.44 194.95 226.14 134.82 226.14"/>
+          <polyline class="circuit-trace thick" points="378.78 282.83 218.43 282.83 156.04 345.22 156.04 425.4 56.83 524.61"/>
+          <polyline class="circuit-trace thick" points="218.43 282.83 138.25 282.83 56.83 364.26"/>
+          <polyline class="circuit-trace thick" points="269.43 392.19 212.73 448.88 212.73 529.06 61.45 680.34"/>
+          <polyline class="circuit-trace thick" points="269.43 552.54 212.73 609.23 212.73 769.58 169.26 813.06"/>
+          <polyline class="circuit-trace thick" points="416.02 806.82 326.12 896.73 326.12 1006.16"/>
+          <polyline class="circuit-trace thick" points="456.11 846.91 439.5 863.52 439.5 943.69 382.81 1000.38 382.81 1062.36"/>
+          <polyline class="circuit-trace thick" points="326.12 636.74 326.12 736.37 269.43 793.07 269.43 936.37"/>
+          <polyline class="circuit-trace thick" points="133.32 768.82 156.04 746.1 156.04 425.4"/>
+          <line class="circuit-trace thick" x1="496.2" y1="1062.36" x2="496.2" y2="849.76"/>
+          <line class="circuit-trace thin" x1="354.46" y1="679.68" x2="449.23" y2="679.68"/>
+          <line class="circuit-trace thin" x1="637.93" y1="679.68" x2="543.16" y2="679.68"/>
+          <line class="circuit-trace thick" x1="212.73" y1="689.41" x2="295.76" y2="606.38"/>
+          <line class="circuit-trace thick" x1="443.53" y1="112.75" x2="248.2" y2="112.75"/>
+          <line class="circuit-trace thick" x1="298.61" y1="282.83" x2="215.58" y2="365.86"/>
+          <line class="circuit-trace thick" x1="269.43" y1="873.24" x2="349.6" y2="793.07"/>
+          <polyline class="circuit-trace thick" points="401.01 70.23 496.2 165.42 591.38 70.23"/>
+          <line class="circuit-trace thick" x1="194.95" y1="226.14" x2="316.39" y2="226.14"/>
+          <line class="circuit-trace thick" x1="269.43" y1="793.07" x2="269.43" y2="712.89"/>
+          <polyline class="circuit-trace thick" points="539.13 282.83 652.52 169.44 740.75 169.44 797.45 226.14 857.58 226.14"/>
+          <polyline class="circuit-trace thick" points="613.61 282.83 773.96 282.83 836.35 345.22 836.35 425.4 935.57 524.61"/>
+          <polyline class="circuit-trace thick" points="773.96 282.83 854.14 282.83 935.57 364.26"/>
+          <polyline class="circuit-trace thick" points="722.97 392.19 779.66 448.88 779.66 529.06 930.94 680.34"/>
+          <polyline class="circuit-trace thick" points="722.97 552.54 779.66 609.23 779.66 769.58 823.13 813.06"/>
+          <polyline class="circuit-trace thick" points="576.37 806.82 666.28 896.73 666.28 1006.16"/>
+          <polyline class="circuit-trace thick" points="536.28 846.91 552.89 863.52 552.89 943.69 609.58 1000.38 609.58 1062.36"/>
+          <polyline class="circuit-trace thick" points="666.28 636.74 666.28 736.37 722.97 793.07 722.97 936.37"/>
+          <polyline class="circuit-trace thick" points="859.07 768.82 836.35 746.1 836.35 425.4"/>
+          <line class="circuit-trace thick" x1="779.66" y1="689.41" x2="696.64" y2="606.38"/>
+          <line class="circuit-trace thick" x1="548.86" y1="112.75" x2="744.19" y2="112.75"/>
+          <polyline class="circuit-trace thick" points="420.05 169.44 496.2 245.59 572.34 169.44"/>
+          <line class="circuit-trace thick" x1="693.79" y1="282.83" x2="776.81" y2="365.86"/>
+          <line class="circuit-trace thick" x1="722.97" y1="873.24" x2="642.79" y2="793.07"/>
+          <line class="circuit-trace thick" x1="797.45" y1="226.14" x2="676" y2="226.14"/>
+          <line class="circuit-trace thick" x1="722.97" y1="793.07" x2="722.97" y2="712.89"/>
+        </g>
+
+        <!-- Dynamic Energy Surge Traces Overlay -->
+        <g class="circuit-surge-layer">
+          <polygon class="circuit-pulse" points="533.44 849.76 581.24 801.96 581.24 761.87 637.93 705.18 637.93 665.09 722.97 580.05 722.97 392.19 613.61 282.83 539.13 282.83 496.2 325.77 453.26 282.83 378.78 282.83 269.43 392.19 269.43 580.05 354.46 665.09 354.46 705.18 411.16 761.87 411.16 801.96 458.96 849.76 533.44 849.76"/>
+          <polyline class="circuit-pulse" points="411.16 764.72 458.12 764.72 496.2 726.65 534.27 764.72 581.24 764.72"/>
+          <polyline class="circuit-pulse" points="453.26 282.83 339.87 169.44 251.64 169.44 194.95 226.14 134.82 226.14"/>
+          <polyline class="circuit-pulse" points="378.78 282.83 218.43 282.83 156.04 345.22 156.04 425.4 56.83 524.61"/>
+          <polyline class="circuit-pulse" points="269.43 392.19 212.73 448.88 212.73 529.06 61.45 680.34"/>
+          <polyline class="circuit-pulse" points="416.02 806.82 326.12 896.73 326.12 1006.16"/>
+          <polyline class="circuit-pulse" points="456.11 846.91 439.5 863.52 439.5 943.69 382.81 1000.38 382.81 1062.36"/>
+          <polyline class="circuit-pulse" points="539.13 282.83 652.52 169.44 740.75 169.44 797.45 226.14 857.58 226.14"/>
+          <polyline class="circuit-pulse" points="613.61 282.83 773.96 282.83 836.35 345.22 836.35 425.4 935.57 524.61"/>
+          <polyline class="circuit-pulse" points="722.97 392.19 779.66 448.88 779.66 529.06 930.94 680.34"/>
+          <polyline class="circuit-pulse" points="576.37 806.82 666.28 896.73 666.28 1006.16"/>
+          <polyline class="circuit-pulse" points="536.28 846.91 552.89 863.52 552.89 943.69 609.58 1000.38 609.58 1062.36"/>
+          <line class="circuit-pulse" x1="496.2" y1="424.56" x2="496.2" y2="165.42"/>
+          <polyline class="circuit-pulse" points="401.01 70.23 496.2 165.42 591.38 70.23"/>
+        </g>
+
+        <!-- Dynamic Lion Eyes with High Voltage Intensity -->
+        <g class="circuit-eyes-layer">
+          <polygon class="circuit-eye left" points="406.29 436.3 326.12 436.3 382.81 493 422.9 493 439.5 509.6 439.5 469.51 406.29 436.3"/>
+          <polygon class="circuit-eye right" points="586.1 436.3 666.28 436.3 609.58 493 569.49 493 552.89 509.6 552.89 469.51 586.1 436.3"/>
+        </g>
+
+        <!-- Quantum Circuit Terminal Nodes -->
+        <g class="circuit-nodes-layer">
+          <circle class="circuit-node" cx="401.01" cy="70.23" r="14.17"/>
+          <circle class="circuit-node" cx="134.82" cy="226.14" r="14.17"/>
+          <circle class="circuit-node" cx="56.83" cy="364.26" r="14.17"/>
+          <circle class="circuit-node" cx="56.83" cy="524.61" r="14.17"/>
+          <circle class="circuit-node" cx="61.45" cy="680.34" r="14.17"/>
+          <circle class="circuit-node" cx="133.32" cy="768.82" r="14.17"/>
+          <circle class="circuit-node" cx="169.26" cy="813.06" r="14.17"/>
+          <circle class="circuit-node" cx="269.43" cy="936.37" r="14.17"/>
+          <circle class="circuit-node" cx="326.12" cy="1006.16" r="14.17"/>
+          <circle class="circuit-node" cx="382.81" cy="1062.36" r="14.17"/>
+          <circle class="circuit-node" cx="496.2" cy="1062.36" r="14.17"/>
+          <circle class="circuit-node" cx="248.2" cy="112.75" r="14.17"/>
+          <circle class="circuit-node" cx="420.05" cy="169.44" r="14.17"/>
+          <circle class="circuit-node" cx="215.58" cy="365.86" r="14.17"/>
+          <circle class="circuit-node" cx="349.6" cy="793.07" r="14.17"/>
+          <circle class="circuit-node" cx="316.39" cy="226.14" r="14.17"/>
+          <circle class="circuit-node" cx="269.43" cy="712.89" r="14.17"/>
+          <circle class="circuit-node" cx="156.04" cy="585.75" r="14.17"/>
+          <circle class="circuit-node" cx="591.38" cy="70.23" r="14.17"/>
+          <circle class="circuit-node" cx="857.58" cy="226.14" r="14.17"/>
+          <circle class="circuit-node" cx="935.57" cy="364.26" r="14.17"/>
+          <circle class="circuit-node" cx="935.57" cy="524.61" r="14.17"/>
+          <circle class="circuit-node" cx="930.94" cy="680.34" r="14.17"/>
+          <circle class="circuit-node" cx="859.07" cy="768.82" r="14.17"/>
+          <circle class="circuit-node" cx="823.13" cy="813.06" r="14.17"/>
+          <circle class="circuit-node" cx="722.97" cy="936.37" r="14.17"/>
+          <circle class="circuit-node" cx="666.28" cy="1006.16" r="14.17"/>
+          <circle class="circuit-node" cx="609.58" cy="1062.36" r="14.17"/>
+          <circle class="circuit-node" cx="744.19" cy="112.75" r="14.17"/>
+          <circle class="circuit-node" cx="572.34" cy="169.44" r="14.17"/>
+          <circle class="circuit-node" cx="776.81" cy="365.86" r="14.17"/>
+          <circle class="circuit-node" cx="642.79" cy="793.07" r="14.17"/>
+          <circle class="circuit-node" cx="676" cy="226.14" r="14.17"/>
+          <circle class="circuit-node" cx="722.97" cy="712.89" r="14.17"/>
+          <circle class="circuit-node" cx="836.35" cy="585.75" r="14.17"/>
+        </g>
+      </svg>
     </div>
 
-    <!-- Title & Boot Readout -->
-    <div class="boot-text-area">
-      <h1 class="boot-title">RED LION <span class="boot-sub">LABS</span></h1>
-      <div class="boot-terminal-log" id="boot-log">
-        <span class="log-line">> RLL-BOOTLOADER V2.0 STARTUP...</span>
+    <!-- HUD Telemetry Readout & Progress Panel -->
+    <div class="boot-telemetry-hud">
+      <div class="boot-brand-line">
+        <span class="hud-brand-title">RED LION <span class="hud-brand-sub">LABS</span></span>
+        <span class="hud-brand-spec">SYS.V2.1 // QUANTUM_STARTUP</span>
       </div>
-      
-      <!-- Progress Bar -->
-      <div class="boot-progress-frame">
-        <div class="boot-progress-bar" id="boot-progress"></div>
+
+      <!-- Real-time Diagnostic Log -->
+      <div class="boot-terminal-stream" id="boot-log">
+        <span class="log-cursor">></span> <span class="log-text" id="boot-log-text">ENERGIZING QUANTUM CIRCUIT NODES...</span>
+      </div>
+
+      <!-- High Voltage Progress Gauge -->
+      <div class="boot-gauge-container">
+        <div class="boot-gauge-bar" id="boot-progress"></div>
+        <div class="boot-gauge-marker"></div>
+      </div>
+
+      <div class="boot-gauge-meta">
+        <span class="meta-energy" id="boot-voltage-text">BUS VOLTAGE: 480.0 V</span>
+        <span class="meta-pct" id="boot-pct-text">000%</span>
       </div>
     </div>
 
-    <!-- Skip Button -->
+    <!-- Accessible Skip Trigger -->
     <button class="boot-skip-btn" id="boot-skip-btn" aria-label="Skip Intro Animation">
       <span>[ SKIP SEQUENCE // ESC ]</span>
     </button>
@@ -42,73 +207,120 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .boot-overlay {
     position: fixed;
     inset: 0;
-    background: #191919;
-    z-index: 10000;
+    background: #080808;
+    z-index: 100000;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
     overflow: hidden;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s ease;
+    will-change: opacity, transform;
   }
 
   .boot-overlay.is-finished {
     opacity: 0;
+    transform: scale(1.04);
     visibility: hidden;
     pointer-events: none;
   }
 
-  .boot-container {
+  .boot-sparks-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .boot-stage {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    position: relative;
-    padding: 2rem;
-    max-width: 500px;
-    width: 90%;
-    text-align: center;
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    padding: clamp(1rem, 3vw, 2rem);
+    user-select: none;
   }
 
-  /* CAD Reticle Rings */
+  /* CAD Corner Coordinate Labels */
+  .boot-cad-brackets {
+    position: absolute;
+    inset: 1.5rem;
+    pointer-events: none;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.68rem;
+    color: rgba(250, 150, 0, 0.4);
+    letter-spacing: 0.1em;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .boot-cad-brackets {
+      display: block;
+    }
+  }
+
+  .cad-coord-tl { position: absolute; top: 0; left: 0; }
+  .cad-coord-tr { position: absolute; top: 0; right: 0; }
+  .cad-coord-bl { position: absolute; bottom: 0; left: 0; }
+  .cad-coord-br { position: absolute; bottom: 0; right: 0; }
+
+  /* Rotating Reticle Rings Framing Logo */
   .boot-reticle {
     position: absolute;
-    width: 320px;
-    height: 320px;
+    width: min(88vw, 76vh);
+    height: min(88vw, 76vh);
+    max-width: 740px;
+    max-height: 740px;
     pointer-events: none;
+    z-index: 2;
   }
 
   .reticle-ring-outer {
     position: absolute;
     inset: 0;
-    border: 1px dashed rgba(250, 0, 25, 0.35);
+    border: 1px dashed rgba(250, 0, 25, 0.3);
     border-radius: 50%;
-    animation: rotateClockwise 12s linear infinite;
+    animation: rotateClockwise 16s linear infinite;
+  }
+
+  .reticle-ring-mid {
+    position: absolute;
+    inset: 40px;
+    border: 1px solid rgba(250, 150, 0, 0.2);
+    border-radius: 50%;
+    animation: rotateCounter 10s linear infinite;
   }
 
   .reticle-ring-inner {
     position: absolute;
-    inset: 30px;
-    border: 1px solid rgba(250, 150, 0, 0.25);
+    inset: 90px;
+    border: 1px dotted rgba(255, 255, 255, 0.15);
     border-radius: 50%;
-    animation: rotateCounter 8s linear infinite;
+    animation: rotateClockwise 6s linear infinite;
   }
 
-  .reticle-axis-h {
+  .reticle-crosshair-h {
     position: absolute;
     top: 50%;
-    left: -20px;
-    right: -20px;
+    left: -40px;
+    right: -40px;
     height: 1px;
-    background: rgba(200, 200, 200, 0.15);
+    background: linear-gradient(90deg, transparent, rgba(250, 0, 25, 0.3), rgba(250, 150, 0, 0.4), rgba(250, 0, 25, 0.3), transparent);
   }
 
-  .reticle-axis-v {
+  .reticle-crosshair-v {
     position: absolute;
     left: 50%;
-    top: -20px;
-    bottom: -20px;
+    top: -40px;
+    bottom: -40px;
     width: 1px;
-    background: rgba(200, 200, 200, 0.15);
+    background: linear-gradient(180deg, transparent, rgba(250, 0, 25, 0.3), rgba(250, 150, 0, 0.4), rgba(250, 0, 25, 0.3), transparent);
   }
 
   @keyframes rotateClockwise {
@@ -121,109 +333,258 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     to { transform: rotate(0deg); }
   }
 
-  /* Logo Graphic */
-  .boot-logo-box {
+  /* Screen Size Vector Circuit Stage */
+  .boot-logo-container {
     position: relative;
-    z-index: 2;
-    margin-bottom: 1.5rem;
+    z-index: 5;
+    width: min(85vw, 68vh);
+    height: min(85vw, 68vh);
+    max-width: 620px;
+    max-height: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 0 35px rgba(250, 0, 25, 0.4));
   }
 
-  .boot-lion-img {
-    width: 140px;
-    height: 140px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 15px rgba(250, 0, 25, 0.6));
-    animation: pulseLogo 2s ease-in-out infinite alternate;
+  .boot-circuit-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
   }
 
-  @keyframes pulseLogo {
-    from { transform: scale(0.96); filter: drop-shadow(0 0 10px rgba(250, 0, 25, 0.4)); }
-    to { transform: scale(1.02); filter: drop-shadow(0 0 25px rgba(250, 0, 25, 0.9)); }
+  /* Circuit Trace Base Lines */
+  .circuit-trace {
+    stroke: #FA0019;
+    stroke-miterlimit: 10;
+    fill: none;
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawCircuitTraces 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  /* Circuit Line Drawing Animations */
-  .circuit-head polygon, .circuit-head path, .circuit-head line {
-    stroke-dasharray: 200;
-    stroke-dashoffset: 200;
-    animation: drawCircuit 2.2s ease forwards;
+  .circuit-trace.thick {
+    stroke-width: 13px;
   }
 
-  .circuit-head circle {
-    opacity: 0;
-    animation: fadeInCircle 0.5s ease 1.2s forwards;
+  .circuit-trace.thin {
+    stroke-width: 7px;
   }
 
-  @keyframes drawCircuit {
-    to {
+  /* Circuit Energy Pulse Layer - Traveling Electric Current */
+  .circuit-pulse {
+    stroke: #FA9600;
+    stroke-width: 14px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 60 280;
+    stroke-dashoffset: 800;
+    filter: url(#energyGlow);
+    animation: energySurgeLoop 1.6s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+  }
+
+  @keyframes energySurgeLoop {
+    0% {
+      stroke-dashoffset: 800;
+      stroke: #FA0019;
+      opacity: 0.6;
+    }
+    50% {
+      stroke: #FFFFFF;
+      opacity: 1;
+      filter: drop-shadow(0 0 12px #FA9600) drop-shadow(0 0 24px #FA0019);
+    }
+    100% {
       stroke-dashoffset: 0;
+      stroke: #FA9600;
+      opacity: 0.8;
     }
   }
 
-  @keyframes fadeInCircle {
-    to {
+  @keyframes drawCircuitTraces {
+    0% {
+      stroke-dashoffset: 600;
+      opacity: 0.2;
+    }
+    100% {
+      stroke-dashoffset: 0;
       opacity: 1;
     }
   }
 
-  /* Typography */
-  .boot-text-area {
+  /* Lion Eyes & Nose High Voltage Core */
+  .circuit-eye {
+    fill: #FA0019;
+    stroke: #FA9600;
+    stroke-width: 4px;
+    filter: url(#hyperPulse);
+    animation: eyeCharge 1.4s ease-in-out infinite alternate;
+  }
+
+  .circuit-nose {
+    fill: #FA0019;
+    stroke: #FA0019;
+    stroke-width: 5px;
+    animation: nosePulse 1.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes eyeCharge {
+    0% {
+      fill: #7D0019;
+      stroke: #FA0019;
+      filter: drop-shadow(0 0 8px #FA0019);
+    }
+    100% {
+      fill: #FA9600;
+      stroke: #FFFFFF;
+      filter: drop-shadow(0 0 20px #FA9600) drop-shadow(0 0 35px #FA0019);
+    }
+  }
+
+  @keyframes nosePulse {
+    0% { fill: #FA0019; }
+    100% { fill: #FA9600; filter: drop-shadow(0 0 14px #FA9600); }
+  }
+
+  /* Circuit Terminal Nodes */
+  .circuit-node {
+    fill: #FA0019;
+    stroke: #FA9600;
+    stroke-width: 4px;
+    transform-origin: center;
+    animation: nodePulse 1.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes nodePulse {
+    0% {
+      transform: scale(0.92);
+      fill: #FA0019;
+      stroke: rgba(250, 150, 0, 0.4);
+    }
+    50% {
+      fill: #FA9600;
+      stroke: #FFFFFF;
+    }
+    100% {
+      transform: scale(1.12);
+      fill: #FFFFFF;
+      stroke: #FA0019;
+      filter: drop-shadow(0 0 10px #FA9600) drop-shadow(0 0 18px #FA0019);
+    }
+  }
+
+  /* HUD Telemetry Readout */
+  .boot-telemetry-hud {
     position: relative;
-    z-index: 2;
+    z-index: 6;
     width: 100%;
+    max-width: 520px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    background: rgba(14, 14, 14, 0.85);
+    border: 1px solid rgba(250, 0, 25, 0.35);
+    padding: 1rem 1.4rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 15px rgba(250, 0, 25, 0.2);
   }
 
-  .boot-title {
-    font-family: var(--font-heading);
-    font-size: 1.6rem;
-    letter-spacing: 0.15em;
+  .boot-brand-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hud-brand-title {
+    font-family: var(--font-heading, sans-serif);
+    font-size: 1.15rem;
+    font-weight: 800;
     color: #FA0019;
-    text-shadow: 0 0 12px rgba(250, 0, 25, 0.5);
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
   }
 
-  .boot-sub {
+  .hud-brand-sub {
     color: #FA9600;
   }
 
-  .boot-terminal-log {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: #C8C8C8;
-    height: 24px;
-    margin-bottom: 1rem;
+  .hud-brand-spec {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.68rem;
+    color: rgba(200, 200, 200, 0.7);
+    letter-spacing: 0.08em;
+  }
+
+  .boot-terminal-stream {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.76rem;
+    color: #FA9600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     letter-spacing: 0.05em;
   }
 
-  .boot-progress-frame {
+  .log-cursor {
+    color: #FA0019;
+    font-weight: bold;
+    animation: blinkCursor 0.8s infinite;
+  }
+
+  @keyframes blinkCursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .boot-gauge-container {
     width: 100%;
-    height: 4px;
-    background: rgba(200, 200, 200, 0.1);
-    border: 1px solid rgba(250, 0, 25, 0.3);
+    height: 5px;
+    background: rgba(40, 40, 40, 0.8);
+    border: 1px solid rgba(250, 0, 25, 0.4);
     position: relative;
     overflow: hidden;
   }
 
-  .boot-progress-bar {
+  .boot-gauge-bar {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #FA0019, #FA9600);
-    box-shadow: 0 0 8px #FA0019;
-    transition: width 0.1s linear;
+    background: linear-gradient(90deg, #FA0019 0%, #FA9600 70%, #FFFFFF 100%);
+    box-shadow: 0 0 12px #FA0019, 0 0 20px #FA9600;
+    transition: width 0.08s linear;
   }
 
+  .boot-gauge-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.68rem;
+    color: rgba(200, 200, 200, 0.6);
+  }
+
+  .meta-energy {
+    color: #FA9600;
+  }
+
+  .meta-pct {
+    color: #FFFFFF;
+    font-weight: bold;
+  }
+
+  /* Skip Button */
   .boot-skip-btn {
     position: relative;
-    z-index: 3;
-    margin-top: 2rem;
+    z-index: 7;
+    margin-top: 1rem;
     background: transparent;
-    border: 1px solid rgba(200, 200, 200, 0.2);
-    color: rgba(200, 200, 200, 0.6);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    padding: 0.35rem 0.85rem;
+    border: 1px solid rgba(200, 200, 200, 0.25);
+    color: rgba(200, 200, 200, 0.65);
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    padding: 0.4rem 1rem;
     cursor: pointer;
     letter-spacing: 0.1em;
     transition: all 0.2s ease;
@@ -232,49 +593,176 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .boot-skip-btn:hover {
     color: #FA9600;
     border-color: #FA9600;
-    box-shadow: 0 0 10px rgba(250, 150, 0, 0.3);
+    box-shadow: 0 0 12px rgba(250, 150, 0, 0.4);
+    background: rgba(250, 150, 0, 0.08);
   }
 </style>
 
 <script>
   function runBootSequence() {
     const overlay = document.getElementById('boot-sequence');
-    const logElem = document.getElementById('boot-log');
+    const logText = document.getElementById('boot-log-text');
     const progressBar = document.getElementById('boot-progress');
+    const pctText = document.getElementById('boot-pct-text');
+    const voltText = document.getElementById('boot-voltage-text');
     const skipBtn = document.getElementById('boot-skip-btn');
+    const sparksCanvas = document.getElementById('boot-sparks-canvas') as HTMLCanvasElement;
+    const ctx = sparksCanvas?.getContext('2d');
 
     if (!overlay) return;
 
-    // Check session storage to avoid annoying repeated 3s intro if user navigated internally
-    const hasSeenIntro = sessionStorage.getItem('rll_intro_seen');
-    if (hasSeenIntro) {
-      overlay.style.display = 'none';
-      return;
+    // High Voltage Electrical Sparks Background Simulation
+    interface Spark {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      life: number;
+      maxLife: number;
+      size: number;
+      color: string;
+      isLightning?: boolean;
+      points?: { x: number; y: number }[];
     }
 
-    const logMessages = [
-      { time: 200, text: '> INITIALIZING RLL-CORE V2.0...' },
-      { time: 800, text: '> LOADING CAD-BIM MATRIX ENGINES...' },
-      { time: 1500, text: '> SYNCING PARAMETRIC GEOMETRY PIPELINE...' },
-      { time: 2200, text: '> VERIFYING GITHUB TELEMETRY DATA...' },
-      { time: 2800, text: '> ACCESS GRANTED. SYSTEM READY.' }
+    const sparks: Spark[] = [];
+    let isRunning = true;
+
+    function resizeCanvas() {
+      if (sparksCanvas) {
+        sparksCanvas.width = window.innerWidth;
+        sparksCanvas.height = window.innerHeight;
+      }
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+
+    function emitBackgroundSparks() {
+      if (!isRunning) return;
+      const colors = ['#FA0019', '#FA9600', '#FFFFFF', '#FFD277'];
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+
+      // Random lightning discharge around perimeter or jumping inward
+      if (Math.random() < 0.4) {
+        const startAngle = Math.random() * Math.PI * 2;
+        const startR = 150 + Math.random() * (Math.min(cx, cy) * 0.9);
+        let px = cx + Math.cos(startAngle) * startR;
+        let py = cy + Math.sin(startAngle) * startR;
+
+        const points = [{ x: px, y: py }];
+        const segs = 3 + Math.floor(Math.random() * 4);
+        for (let s = 0; s < segs; s++) {
+          px += (Math.random() - 0.5) * 60;
+          py += (Math.random() - 0.5) * 60;
+          points.push({ x: px, y: py });
+        }
+
+        sparks.push({
+          x: px,
+          y: py,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          life: 1,
+          maxLife: 15 + Math.random() * 15,
+          size: 1.5 + Math.random() * 2,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          isLightning: true,
+          points
+        });
+      }
+
+      // Micro sparks burst
+      for (let i = 0; i < 3; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const r = Math.random() * Math.min(cx, cy) * 0.95;
+        const x = cx + Math.cos(angle) * r;
+        const y = cy + Math.sin(angle) * r;
+        const speed = 1 + Math.random() * 3.5;
+
+        sparks.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          maxLife: 20 + Math.random() * 25,
+          size: 1 + Math.random() * 2.2,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+    }
+
+    function renderSparks() {
+      if (!ctx || !sparksCanvas || !isRunning) return;
+      ctx.clearRect(0, 0, sparksCanvas.width, sparksCanvas.height);
+
+      emitBackgroundSparks();
+
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const s = sparks[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life -= 1;
+
+        if (s.life <= 0) {
+          sparks.splice(i, 1);
+          continue;
+        }
+
+        const alpha = s.life / s.maxLife;
+        ctx.save();
+        ctx.strokeStyle = s.color;
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = alpha;
+        ctx.shadowColor = s.color;
+        ctx.shadowBlur = 10;
+
+        if (s.isLightning && s.points && s.points.length > 1) {
+          ctx.lineWidth = s.size;
+          ctx.beginPath();
+          ctx.moveTo(s.points[0].x, s.points[0].y);
+          for (let p = 1; p < s.points.length; p++) {
+            ctx.lineTo(s.points[p].x + (Math.random() - 0.5) * 4, s.points[p].y + (Math.random() - 0.5) * 4);
+          }
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      requestAnimationFrame(renderSparks);
+    }
+    requestAnimationFrame(renderSparks);
+
+    // Boot Sequence Timing Logic (At least 3.2 seconds presentation)
+    const logPhases = [
+      { time: 0, text: 'INITIALIZING RLL-CORE V2.1 MATRIX...', voltage: 120 },
+      { time: 450, text: 'ENERGIZING QUANTUM CIRCUIT TRACES...', voltage: 240 },
+      { time: 1100, text: 'LOCKING HIGH-PRECISION CAD NODES...', voltage: 380 },
+      { time: 1800, text: 'PROPAGATING ELECTROMAGNETIC SURGE...', voltage: 440 },
+      { time: 2500, text: 'HARMONIC STABILIZATION CONFIRMED...', voltage: 480 },
+      { time: 3000, text: 'SYSTEM ONLINE // ACCESS GRANTED.', voltage: 480 }
     ];
 
-    let startTime = Date.now();
-    const totalDuration = 3000; // ~3 seconds
+    const startTime = Date.now();
+    const totalDuration = 3200; // 3.2 seconds minimum
 
     function update() {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(100, (elapsed / totalDuration) * 100);
 
-      if (progressBar) {
-        progressBar.style.width = `${progress}%`;
-      }
+      if (progressBar) progressBar.style.width = `${progress}%`;
+      if (pctText) pctText.textContent = `${String(Math.floor(progress)).padStart(3, '0')}%`;
 
-      // Update log text
-      for (const msg of logMessages) {
-        if (elapsed >= msg.time && logElem) {
-          logElem.textContent = msg.text;
+      // Update telemetry stream text
+      for (const phase of logPhases) {
+        if (elapsed >= phase.time) {
+          if (logText) logText.textContent = phase.text;
+          if (voltText) voltText.textContent = `BUS VOLTAGE: ${(phase.voltage + Math.random() * 4).toFixed(1)} V`;
         }
       }
 
@@ -286,18 +774,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     }
 
     function finishBoot() {
+      isRunning = false;
       sessionStorage.setItem('rll_intro_seen', 'true');
       overlay.classList.add('is-finished');
       setTimeout(() => {
         overlay.style.display = 'none';
-      }, 600);
+      }, 800);
     }
 
-    // Skip handlers
-    if (skipBtn) {
-      skipBtn.addEventListener('click', finishBoot);
-    }
-
+    // Skip Handlers
+    if (skipBtn) skipBtn.addEventListener('click', finishBoot);
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
         finishBoot();

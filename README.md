@@ -1,4 +1,4 @@
-# Red Lion Labs // Specification V2.0
+# Red Lion Labs // Specification V2.1
 
 > **Where Architectural Precision Collides with Software Engineering**
 
@@ -10,7 +10,7 @@ Live URL: [https://danieldleao.github.io/RedLion/](https://danieldleao.github.io
 
 ## 📐 Brand & Design Specification
 
-Built in strict adherence to the **Red Lion Labs Design Manual V2.0**:
+Built in strict adherence to the **Red Lion Labs Design Manual V2.1**:
 
 - **Color Hierarchy**:
   - `RED` (`#FA0019`): Primary brand accent, titles, `<H1>`/`<H2>`, active markers, logo.
@@ -94,4 +94,4 @@ npm run preview
 
 ---
 
-*© 2026 Red Lion Labs. Specification Manual V2.0. All systems operational.*
+*© 2026 Red Lion Labs. Specification Manual V2.1. All systems operational.*

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   RED LION LABS - DESIGN SPECIFICATION V2.0
+   RED LION LABS - DESIGN SPECIFICATION V2.1
    Industrial Control / CAD Blueprint / Software Engineering Design System
    ========================================================================== */
 
@@ -106,17 +106,21 @@ body {
   line-height: 1.6;
 }
 
-/* CAD Network Grid Background */
+/* CAD Dot Matrix Pattern & Thematic Tech Background */
 .cad-grid-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  background-color: #0c0c0c;
   background-image: 
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 32px 32px;
-  opacity: 0.8;
+    radial-gradient(circle, rgba(250, 0, 25, 0.5) 1px, transparent 1.1px),
+    radial-gradient(circle, rgba(250, 150, 0, 0.25) 1.2px, transparent 1.3px);
+  background-size: 24px 24px, 72px 72px;
+  background-position: 0 0, 12px 12px;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0.5) 60%, transparent 92%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0.5) 60%, transparent 92%);
+  opacity: 0.95;
 }
 
 .cad-grid-overlay {
@@ -124,11 +128,20 @@ body {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 30%, transparent 40%, rgba(15, 15, 15, 0.7) 100%);
+  background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(10, 10, 10, 0.45) 60%, rgba(5, 5, 5, 0.88) 85%, #050505 100%);
+}
+
+[data-theme="light"] .cad-grid-bg {
+  background-color: #c8c8c8;
+  background-image: 
+    radial-gradient(circle, rgba(125, 0, 25, 0.4) 1px, transparent 1.1px),
+    radial-gradient(circle, rgba(250, 150, 0, 0.2) 1.2px, transparent 1.3px);
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0.5) 60%, transparent 92%);
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 50%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0.5) 60%, transparent 92%);
 }
 
 [data-theme="light"] .cad-grid-overlay {
-  background: radial-gradient(circle at 50% 30%, transparent 40%, rgba(180, 180, 180, 0.6) 100%);
+  background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(200, 200, 200, 0.45) 60%, rgba(180, 180, 180, 0.88) 85%, #b0b0b0 100%);
 }
 
 /* Scanline Effect */
@@ -160,8 +173,12 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: clamp(2rem, 5vw, 3.8rem);
-  color: var(--accent-primary);
-  text-shadow: var(--hud-glow);
+  background: linear-gradient(90deg, #FA0019 0%, #FA9600 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #FA0019;
+  display: inline-block;
 }
 
 h2 {
@@ -349,8 +366,16 @@ a:hover, a:focus-visible {
   text-transform: uppercase;
   background: rgba(250, 150, 0, 0.08);
   border: 1px solid rgba(250, 150, 0, 0.3);
-  padding: 0.25rem 0.75rem;
-  margin-bottom: 0.75rem;
+  padding: 0.35rem 0.85rem;
+  margin-bottom: 1.15rem;
+}
+
+.section-header h2,
+.about-section h2,
+.content-section h2 {
+  display: block;
+  margin-top: 0.25rem;
+  margin-bottom: 0.85rem;
 }
 
 .section-tag::before {

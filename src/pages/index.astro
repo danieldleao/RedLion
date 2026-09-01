@@ -16,46 +16,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   <section class="hero-section">
     <div class="container">
       <div class="hero-grid">
-        <!-- Left Hero Content -->
-        <div class="hero-text-content">
-          <div class="cad-dimension-line">
-            <span>SYS-INIT // LAT: 43.8509° N // LON: 79.0204° W</span>
-          </div>
-          
-          <div class="section-tag">
-            <span>LABORATORY SPEC V2.0</span>
-          </div>
-
-          <h1 class="hero-title">
-            RED LION <span class="highlight-yellow">LABS</span>
-          </h1>
-
-          <p class="hero-subhead">
-            Where architectural precision collides with software engineering.
-          </p>
-
-          <p class="lead">
-            Welcome to Red Lion Labs, a digital sandbox, creative workshop, and developer portfolio all rolled into one.
-          </p>
-
-          <p class="hero-body">
-            Think of Red Lion Labs as the collision zone between architectural precision and software engineering. A technical testing ground for experimentation, software projects, problem solving, and the combination of architectural design thinking with programming logic.
-          </p>
-
-          <div class="hero-cta-matrix">
-            <a href={`${baseUrl}/portfolio`} class="cad-btn cad-btn-primary">
-              <span>EXPLORE REPOSITORIES ↗</span>
-            </a>
-            <a href={`${baseUrl}/about`} class="cad-btn cad-btn-secondary">
-              <span>ABOUT THE LAB // SPEC</span>
-            </a>
-            <a href="#playground-section" class="cad-btn">
-              <span>LAUNCH PLAYGROUND ↓</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Right Hero CAD Visual -->
+        <!-- Left Hero CAD Visual -->
         <div class="hero-visual-frame">
           <div class="cad-frame hud-panel hero-hud-box">
             <div class="hud-box-header">
@@ -82,6 +43,43 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
                 <span class="val">± 0.001 mm</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Right Hero Content -->
+        <div class="hero-text-content">
+          <div class="cad-dimension-line">
+            <span>SYS-INIT // LAT: 43.8509° N // LON: 79.0204° W</span>
+          </div>
+          
+          <div class="section-tag">
+            <span>LABORATORY SPEC V2.1</span>
+          </div>
+
+          <h1 class="hero-title">RED LION LABS</h1>
+
+          <p class="hero-subhead">
+            Where architectural precision collides with software engineering.
+          </p>
+
+          <p class="lead">
+            Welcome to Red Lion Labs, a digital sandbox, creative workshop, and developer portfolio all rolled into one.
+          </p>
+
+          <p class="hero-body">
+            Think of Red Lion Labs as the collision zone between architectural precision and software engineering. A technical testing ground for experimentation, software projects, problem solving, and the combination of architectural design thinking with programming logic.
+          </p>
+
+          <div class="hero-cta-matrix">
+            <a href={`${baseUrl}/portfolio`} class="cad-btn cad-btn-secondary">
+              <span>EXPLORE REPOSITORIES ↗</span>
+            </a>
+            <a href={`${baseUrl}/about`} class="cad-btn cad-btn-secondary">
+              <span>ABOUT THE LAB // SPEC</span>
+            </a>
+            <a href="#playground-section" class="cad-btn cad-btn-secondary">
+              <span>LAUNCH PLAYGROUND ↓</span>
+            </a>
           </div>
         </div>
       </div>
@@ -199,7 +197,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             Led by Daniel Doro Leão, Red Lion Labs synthesizes over a decade of high-precision architectural detailing and BIM coordination into modern software engineering, data structures, and object-oriented systems.
           </p>
           <div class="preview-actions">
-            <a href={`${baseUrl}/about`} class="cad-btn cad-btn-primary">
+            <a href={`${baseUrl}/about`} class="cad-btn cad-btn-secondary">
               <span>READ FULL TECHNICAL SPECIFICATION ↗</span>
             </a>
           </div>
@@ -216,27 +214,47 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   <section class="content-section">
     <div class="container">
       <div class="github-preview-box hud-panel cad-frame">
-        <div class="github-preview-header">
-          <div>
+        <div class="github-preview-grid">
+          <div class="github-preview-content">
             <div class="section-tag">
               <span>OPEN REPOSITORIES // GITHUB TELEMETRY</span>
             </div>
             <h2>LIVE REPOSITORY PIPELINE</h2>
+
+            <p class="lead">
+              The portfolio is directly connected to GitHub API streams. Discover projects ranging from BIM parametric logic engines to object-oriented algorithm implementations.
+            </p>
+
+            <div class="github-meta-strip">
+              <div class="meta-node">
+                <span class="lbl">TARGET:</span>
+                <span class="val highlight-yellow">@danieldleao</span>
+              </div>
+              <div class="meta-node">
+                <span class="lbl">PROTOCOL:</span>
+                <span class="val">REST API V3 + GRAPHQL</span>
+              </div>
+            </div>
+
+            <div class="github-quick-actions">
+              <a href={`${baseUrl}/portfolio`} class="cad-btn cad-btn-secondary">
+                <span>ENTER 3D SPIRAL PORTFOLIO VIEW ↗</span>
+              </a>
+              <a href={`${baseUrl}/portfolio?view=list`} class="cad-btn cad-btn-secondary">
+                <span>SWITCH TO MATRIX LIST VIEW</span>
+              </a>
+              <a href="https://github.com/danieldleao" target="_blank" rel="noopener noreferrer" class="cad-btn cad-btn-secondary">
+                <span>GITHUB PROFILE ↗</span>
+              </a>
+            </div>
           </div>
-          <a href="https://github.com/danieldleao" target="_blank" rel="noopener noreferrer" class="cad-btn cad-btn-secondary">
-            <span>GITHUB @danieldleao ↗</span>
-          </a>
-        </div>
-        <p>
-          The portfolio is directly connected to GitHub API streams. Discover projects ranging from BIM parametric logic engines to object-oriented algorithm implementations.
-        </p>
-        <div class="github-quick-actions">
-          <a href={`${baseUrl}/portfolio`} class="cad-btn cad-btn-primary">
-            <span>ENTER 3D SPIRAL PORTFOLIO VIEW ↗</span>
-          </a>
-          <a href={`${baseUrl}/portfolio?view=list`} class="cad-btn">
-            <span>SWITCH TO MATRIX LIST VIEW</span>
-          </a>
+
+          <div class="github-image-frame">
+            <div class="github-img-wrapper">
+              <img src={`${baseUrl}/Img/rlGitHub.jpg`} alt="Red Lion Labs GitHub Pipeline Terminal" class="github-preview-img" />
+              <div class="github-overlay-tag">STREAM: GITHUB_REPOS // @DANIELDLEAO</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -281,13 +299,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   @media (min-width: 960px) {
     .hero-grid {
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 0.85fr 1.15fr;
     }
   }
 
   .hero-title {
     margin-bottom: 0.75rem;
     line-height: 1.1;
+    background: linear-gradient(90deg, #fa0019 0%, #fa9600 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #fa0019;
+    display: inline-block;
   }
 
   .hero-subhead {
@@ -307,6 +331,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     display: flex;
     flex-wrap: wrap;
     gap: 0.85rem;
+    align-items: center;
+  }
+
+  .hero-cta-matrix .cad-btn {
+    font-size: 0.82rem;
+    padding: 0.85rem 1.4rem;
   }
 
   /* Hero Right Frame */
@@ -343,8 +373,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     align-items: center;
     justify-content: center;
     background: radial-gradient(circle at center, rgba(40, 15, 15, 0.7) 0%, #0d0d0d 85%);
-    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 2.5rem);
-    min-height: 360px;
+    padding: 0;
+    min-height: 420px;
+    height: 100%;
+    width: 100%;
   }
 
   [data-theme="light"] .hero-logo-wrap {
@@ -352,17 +384,20 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   .hero-logo-img {
-    max-width: 280px;
-    width: 80%;
-    height: auto;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    max-height: 480px;
     object-fit: contain;
+    padding: 2px;
+    transform: scale(1.08);
     filter: drop-shadow(0 0 20px rgba(250, 0, 25, 0.5));
     transition: transform 0.3s ease, filter 0.3s ease;
   }
 
   .hero-hud-box:hover .hero-logo-img {
-    transform: scale(1.04);
-    filter: drop-shadow(0 0 30px rgba(250, 0, 25, 0.8));
+    transform: scale(1.11);
+    filter: drop-shadow(0 0 32px rgba(250, 0, 25, 0.85));
   }
 
   .hero-banner-img {
@@ -515,24 +550,93 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   /* GitHub Preview Box */
   .github-preview-box {
-    padding: clamp(1.5rem, 3vw, 2.5rem);
+    padding: clamp(1.5rem, 3.5vw, 3rem);
   }
 
-  .github-preview-header {
+  .github-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .github-preview-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+
+  .github-preview-content .section-tag {
+    margin-bottom: 1.25rem;
+  }
+
+  .github-preview-content h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  .github-meta-strip {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
     flex-wrap: wrap;
     gap: 1rem;
-    border-bottom: 1px solid var(--border-dim);
-    padding-bottom: 1.25rem;
-    margin-bottom: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    margin-block: 1rem 1.5rem;
+    padding-block: 0.75rem;
+    border-block: 1px dashed var(--border-dim);
+  }
+
+  .github-meta-strip .lbl {
+    color: var(--text-muted);
+    margin-right: 0.35rem;
+  }
+
+  .github-image-frame {
+    position: relative;
+    border: 1px solid var(--border-strong);
+    overflow: hidden;
+    background: #0d0d0d;
+  }
+
+  .github-img-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .github-preview-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: contrast(1.05);
+    transition: transform 0.4s ease;
+  }
+
+  .github-image-frame:hover .github-preview-img {
+    transform: scale(1.03);
+  }
+
+  .github-overlay-tag {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent-secondary);
+    background: rgba(18, 18, 18, 0.85);
+    border: 1px solid var(--border-dim);
+    padding: 2px 6px;
+    letter-spacing: 0.08em;
   }
 
   .github-quick-actions {
     display: flex;
-    gap: 1rem;
+    gap: 0.85rem;
     flex-wrap: wrap;
     margin-top: 1.5rem;
+    align-items: center;
+  }
+
+  .github-quick-actions .cad-btn {
+    font-size: 0.82rem;
+    padding: 0.85rem 1.4rem;
   }
 </style>

@@ -29,11 +29,26 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <title>{title}</title>
     <meta name="description" content={description} />
     
-    <!-- Open Graph & Social -->
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}/Img/RedLionLogo-OutLine.svg`} />
+    <link rel="apple-touch-icon" href={`${baseUrl}/Img/RedLionLogo-Share.png`} />
+
+    <!-- Open Graph & Social Sharing -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={`${baseUrl}/Img/rlHero.png`} />
+    <meta property="og:image" content="https://danieldleao.github.io/RedLion/Img/RedLionLogo-Share.png" />
+    <meta property="og:image:secure_url" content="https://danieldleao.github.io/RedLion/Img/RedLionLogo-Share.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Red Lion Labs Vector Identity & Architectural Computing" />
+
+    <!-- Twitter / X Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://danieldleao.github.io/RedLion/Img/RedLionLogo-Share.png" />
+    <meta name="twitter:image:alt" content="Red Lion Labs Vector Identity" />
     
     <!-- Theme Prevention of Flash -->
     <script is:inline>
@@ -72,7 +87,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <!-- Live Telemetry Status Bar at very bottom corner -->
     <div class="hud-floating-status" aria-hidden="true">
       <span class="hud-status-node">NODE: RLL-TORONTO</span>
-      <span class="hud-status-spec">SPEC 2.0</span>
+      <span class="hud-status-spec">SPEC 2.1</span>
     </div>
   </body>
 </html>

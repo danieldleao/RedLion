@@ -127,12 +127,12 @@
   .repo-spiral-container {
     position: relative;
     width: 100%;
-    min-height: 680px;
-    height: clamp(680px, 80vh, 900px);
+    min-height: 760px;
+    height: clamp(760px, 86vh, 1000px);
     background: radial-gradient(
       circle at center,
-      rgba(30, 20, 20, 0.4) 0%,
-      rgba(15, 15, 15, 0.98) 80%
+      rgba(35, 20, 20, 0.45) 0%,
+      rgba(12, 12, 12, 0.98) 85%
     );
     border: 1px solid var(--border-strong);
     overflow: hidden;
@@ -213,7 +213,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    perspective: 1200px;
+    perspective: 1400px;
     transform-style: preserve-3d;
   }
 
@@ -229,15 +229,15 @@
     padding: 1.5rem 2.5rem;
   }
 
-  /* Spiral Card Layout */
+  /* Spiral Card Layout - Enlarged & High Impact */
   :global(.spiral-card) {
     position: absolute;
-    width: clamp(290px, 32vw, 440px);
+    width: clamp(380px, 44vw, 620px);
     background: var(--bg-card);
     border: 1px solid var(--border-dim);
-    padding: 1.5rem;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    padding: 1.75rem 2rem;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
     transition:
       transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
       opacity 0.4s ease,
@@ -250,7 +250,7 @@
   :global(.spiral-card:hover) {
     border-color: var(--accent-primary);
     box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.5),
+      0 12px 36px rgba(0, 0, 0, 0.55),
       var(--hud-glow);
   }
 
@@ -258,7 +258,8 @@
     border-color: var(--accent-primary);
     border-width: 1.5px;
     box-shadow:
-      0 15px 40px rgba(0, 0, 0, 0.6),
+      0 20px 50px rgba(0, 0, 0, 0.7),
+      0 0 25px rgba(250, 0, 25, 0.4),
       var(--hud-glow);
     z-index: 30 !important;
   }
@@ -268,44 +269,45 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border-dim);
-    padding-bottom: 0.6rem;
-    margin-bottom: 0.85rem;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   :global(.spiral-card-num) {
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--accent-secondary);
     font-weight: 700;
   }
 
   :global(.spiral-card-lang) {
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    padding: 2px 6px;
-    background: rgba(250, 0, 25, 0.1);
+    font-size: 0.72rem;
+    padding: 3px 8px;
+    background: rgba(250, 0, 25, 0.12);
     border: 1px solid var(--border-strong);
     color: var(--accent-primary);
     text-transform: uppercase;
+    font-weight: 700;
   }
 
   :global(.spiral-card-title) {
     font-family: var(--font-heading);
-    font-size: 1.15rem;
+    font-size: 1.35rem;
     color: var(--text-primary);
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.75rem;
     word-break: break-word;
     letter-spacing: 0.05em;
   }
 
   :global(.spiral-card-desc) {
     font-family: var(--font-mono);
-    font-size: 0.82rem;
+    font-size: 0.88rem;
     color: var(--text-secondary);
-    line-height: 1.5;
-    margin-bottom: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
@@ -753,7 +755,14 @@
           });
 
         card.addEventListener("click", () => {
-          targetIndex = i;
+          if (repos.length === 0) return;
+          const total = repos.length;
+          let offset = targetIndex % total;
+          if (offset < 0) offset += total;
+          let stepDiff = i - offset;
+          while (stepDiff > total / 2) stepDiff -= total;
+          while (stepDiff < -total / 2) stepDiff += total;
+          targetIndex += stepDiff;
         });
 
         stage.appendChild(card);
@@ -763,28 +772,35 @@
       updateCardsPosition();
     }
 
-    // Mathematical Archimedean Spiral Trajectory Layout
+    // Mathematical Archimedean Spiral Trajectory Layout (Infinite Continuous Loop - Expansive & Top-Down Angle)
     function updateCardsPosition() {
       if (cardElements.length === 0) return;
 
       const total = cardElements.length;
-      const anglePerItem = 0.55; // radians per node in spiral
-      const radiusStep = 32; // radial distance step
+      const anglePerItem = 0.50; // radians per node in spiral
+      const radiusStep = 55; // expanded radial distance step
+
+      let offset = currentIndex % total;
+      if (offset < 0) offset += total;
 
       cardElements.forEach((card, i) => {
-        const relativeDiff = i - currentIndex;
+        let relativeDiff = i - offset;
+        while (relativeDiff > total / 2) relativeDiff -= total;
+        while (relativeDiff < -total / 2) relativeDiff += total;
+
         const angle = relativeDiff * anglePerItem;
 
-        // 3D Orbital Spiral coords
-        const distance = 80 + Math.abs(relativeDiff) * radiusStep;
-        const x = Math.sin(angle) * (distance * 2.2);
-        const y = Math.cos(angle) * (distance * 0.7) - 40;
-        const z = -Math.abs(relativeDiff) * 160;
-        const rotateY = -angle * 35;
-        const opacity = Math.max(0.1, 1 - Math.abs(relativeDiff) * 0.28);
-        const scale = Math.max(0.65, 1 - Math.abs(relativeDiff) * 0.12);
+        // 3D Orbital Spiral coords (Elevated perspective viewed from above)
+        const distance = 140 + Math.abs(relativeDiff) * radiusStep;
+        const x = Math.sin(angle) * (distance * 2.85);
+        const y = Math.cos(angle) * (distance * 0.95) - 70;
+        const z = -Math.abs(relativeDiff) * 220;
+        const rotateX = 8 - Math.abs(relativeDiff) * 1.2;
+        const rotateY = -angle * 32;
+        const opacity = Math.max(0.18, 1 - Math.abs(relativeDiff) * 0.22);
+        const scale = Math.max(0.72, 1.08 - Math.abs(relativeDiff) * 0.1);
 
-        card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${rotateY}deg) scale(${scale})`;
+        card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`;
         card.style.opacity = String(opacity);
         card.style.zIndex = String(
           100 - Math.round(Math.abs(relativeDiff) * 10),
@@ -799,21 +815,26 @@
 
       // Update HUD
       if (indexDisplay) {
-        const currentActive = Math.round(currentIndex) + 1;
+        let activeIdx = Math.round(currentIndex) % total;
+        if (activeIdx < 0) activeIdx += total;
+        const currentActive = activeIdx + 1;
         indexDisplay.textContent = `NODE ${String(currentActive).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
       }
 
       if (angleDisplay) {
-        angleDisplay.textContent = `${(currentIndex * anglePerItem).toFixed(2)} rad`;
+        let normalizedAngle = (currentIndex * anglePerItem) % (Math.PI * 2);
+        if (normalizedAngle < 0) normalizedAngle += Math.PI * 2;
+        angleDisplay.textContent = `${normalizedAngle.toFixed(2)} rad`;
       }
 
       if (thumb) {
-        const progress = (currentIndex / Math.max(1, total - 1)) * 100;
-        thumb.style.transform = `translateX(${progress * 4}%)`;
+        let normProgress = (currentIndex % total) / total;
+        if (normProgress < 0) normProgress += 1;
+        thumb.style.transform = `translateX(${normProgress * 400}%)`;
         thumb.style.width = `${Math.max(15, 100 / total)}%`;
       }
 
-      // Draw Radar Canvas
+      // Draw Radar Canvas (Enlarged orbital radar backdrop)
       if (radarCtx && radarCanvas) {
         const w = radarCanvas.offsetWidth;
         const h = radarCanvas.offsetHeight;
@@ -824,7 +845,7 @@
 
         // Concentric Radar Rings
         radarCtx.lineWidth = 0.8;
-        for (let r = 80; r <= 380; r += 75) {
+        for (let r = 100; r <= 620; r += 85) {
           radarCtx.strokeStyle = "rgba(250, 0, 25, 0.12)";
           radarCtx.beginPath();
           radarCtx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -842,13 +863,13 @@
 
         // Spiral Archimedean Line
         radarCtx.strokeStyle = "rgba(250, 150, 0, 0.25)";
-        radarCtx.lineWidth = 1.2;
+        radarCtx.lineWidth = 1.4;
         radarCtx.beginPath();
-        const maxAngle = (total + 2) * anglePerItem;
+        const maxAngle = (total + 4) * anglePerItem;
         for (let a = 0; a <= maxAngle; a += 0.05) {
-          const r = 50 + a * 25;
-          const sx = cx + Math.sin(a - currentIndex * anglePerItem) * (r * 1.4);
-          const sy = cy + Math.cos(a - currentIndex * anglePerItem) * (r * 0.6);
+          const r = 70 + a * 38;
+          const sx = cx + Math.sin(a - currentIndex * anglePerItem) * (r * 1.85);
+          const sy = cy + Math.cos(a - currentIndex * anglePerItem) * (r * 0.85);
           if (a === 0) radarCtx.moveTo(sx, sy);
           else radarCtx.lineTo(sx, sy);
         }
@@ -863,37 +884,59 @@
       requestAnimationFrame(loop);
     }
 
-    // Navigation Events
+    // Navigation Events (Infinite Continuous in both directions)
     prevBtn?.addEventListener("click", () => {
-      targetIndex = Math.max(0, targetIndex - 1);
+      targetIndex -= 1;
     });
 
     nextBtn?.addEventListener("click", () => {
-      targetIndex = Math.min(repos.length - 1, targetIndex + 1);
+      targetIndex += 1;
     });
 
-    // Wheel Scroll Support inside spiral
+    // Wheel Scroll Support inside spiral (Infinite Continuous)
     const viewport = document.getElementById("spiral-viewport");
     viewport?.addEventListener(
       "wheel",
       (e) => {
         e.preventDefault();
-        if (e.deltaY > 20) {
-          targetIndex = Math.min(repos.length - 1, targetIndex + 1);
-        } else if (e.deltaY < -20) {
-          targetIndex = Math.max(0, targetIndex - 1);
+        if (e.deltaY > 15) {
+          targetIndex += 1;
+        } else if (e.deltaY < -15) {
+          targetIndex -= 1;
         }
       },
       { passive: false },
     );
 
-    // Keyboard Arrow Keys
+    // Keyboard Arrow Keys (Infinite Continuous)
     window.addEventListener("keydown", (e) => {
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-        targetIndex = Math.min(repos.length - 1, targetIndex + 1);
+        targetIndex += 1;
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-        targetIndex = Math.max(0, targetIndex - 1);
+        targetIndex -= 1;
       }
+    });
+
+    // Touch / Pointer Drag Support for continuous orbit roll
+    let isPointerDown = false;
+    let pointerStartX = 0;
+    viewport?.addEventListener("pointerdown", (e) => {
+      if ((e.target as HTMLElement).closest("button, a, dialog")) return;
+      isPointerDown = true;
+      pointerStartX = e.clientX;
+    });
+
+    window.addEventListener("pointermove", (e) => {
+      if (!isPointerDown) return;
+      const dx = e.clientX - pointerStartX;
+      if (Math.abs(dx) > 40) {
+        targetIndex += dx > 0 ? -1 : 1;
+        pointerStartX = e.clientX;
+      }
+    });
+
+    window.addEventListener("pointerup", () => {
+      isPointerDown = false;
     });
 
     // Fetch and Start

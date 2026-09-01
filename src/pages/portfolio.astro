@@ -19,7 +19,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         <div class="section-tag">
           <span>PORTFOLIO DIRECTORY // DYNAMIC TELEMETRY</span>
         </div>
-        <h1 class="portfolio-title">GITHUB <span class="highlight-yellow">REPOSITORIES</span></h1>
+        <h1 class="portfolio-title">GITHUB REPOSITORIES</h1>
         <p class="portfolio-desc">
           A live computational mirror of public software repositories, parametric BIM tools, algorithmic experiments, and technical documentation.
         </p>
@@ -76,6 +76,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .portfolio-title {
     margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #fa0019 0%, #fa9600 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #fa0019;
+    display: inline-block;
   }
 
   .portfolio-desc {

@@ -1,10 +1,10 @@
 ---
 interface Props {
-  activePage?: 'main' | 'about' | 'portfolio' | 'contacts';
+  activePage?: "main" | "about" | "portfolio" | "contacts";
 }
 
-const { activePage = 'main' } = Astro.props;
-const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { activePage = "main" } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, "");
 const mainHref = `${baseUrl}/`;
 const aboutHref = `${baseUrl}/about`;
 const portfolioHref = `${baseUrl}/portfolio`;
@@ -16,11 +16,18 @@ const contactsHref = `${baseUrl}/contacts`;
     <!-- Brand / Identity Unit -->
     <a href={mainHref} class="brand-unit" aria-label="Red Lion Labs Home">
       <div class="brand-logo-frame">
-        <img src={`${baseUrl}/Img/RedLionLogo-OutLine.svg`} alt="Red Lion Labs Vector Logo" class="brand-lion-icon" />
+        <img
+          src={`${baseUrl}/Img/RedLionLogo-OutLine.svg`}
+          alt="Red Lion Labs Vector Logo"
+          class="brand-lion-icon"
+        />
       </div>
       <div class="brand-text-block">
-        <span class="brand-title"><span class="brand-red">RED LION</span> <span class="brand-white">LABS</span></span>
-        <span class="brand-meta">SYS.V2.0 // RLL-INSTRUMENT</span>
+        <span class="brand-title"
+          ><span class="brand-red">RED LION</span>
+          <span class="brand-white">LABS</span></span
+        >
+        <span class="brand-meta">SYS.V2.1 // RLL-INSTRUMENT</span>
       </div>
     </a>
 
@@ -28,31 +35,43 @@ const contactsHref = `${baseUrl}/contacts`;
     <nav class="cad-nav" aria-label="Main Navigation">
       <ul class="nav-list">
         <li class="nav-item">
-          <a href={mainHref} class:list={['nav-link', { active: activePage === 'main' }]}>
+          <a
+            href={mainHref}
+            class:list={["nav-link", { active: activePage === "main" }]}
+          >
             <span class="nav-num">01</span>
             <span class="nav-text">MAIN</span>
-            {activePage === 'main' && <span class="nav-indicator" />}
+            {activePage === "main" && <span class="nav-indicator" />}
           </a>
         </li>
         <li class="nav-item">
-          <a href={aboutHref} class:list={['nav-link', { active: activePage === 'about' }]}>
+          <a
+            href={aboutHref}
+            class:list={["nav-link", { active: activePage === "about" }]}
+          >
             <span class="nav-num">02</span>
             <span class="nav-text">ABOUT</span>
-            {activePage === 'about' && <span class="nav-indicator" />}
+            {activePage === "about" && <span class="nav-indicator" />}
           </a>
         </li>
         <li class="nav-item">
-          <a href={portfolioHref} class:list={['nav-link', { active: activePage === 'portfolio' }]}>
+          <a
+            href={portfolioHref}
+            class:list={["nav-link", { active: activePage === "portfolio" }]}
+          >
             <span class="nav-num">03</span>
             <span class="nav-text">PORTFOLIO</span>
-            {activePage === 'portfolio' && <span class="nav-indicator" />}
+            {activePage === "portfolio" && <span class="nav-indicator" />}
           </a>
         </li>
         <li class="nav-item">
-          <a href={contactsHref} class:list={['nav-link', { active: activePage === 'contacts' }]}>
+          <a
+            href={contactsHref}
+            class:list={["nav-link", { active: activePage === "contacts" }]}
+          >
             <span class="nav-num">04</span>
             <span class="nav-text">CONTACTS</span>
-            {activePage === 'contacts' && <span class="nav-indicator" />}
+            {activePage === "contacts" && <span class="nav-indicator" />}
           </a>
         </li>
       </ul>
@@ -67,14 +86,24 @@ const contactsHref = `${baseUrl}/contacts`;
       </div>
 
       <!-- Theme Switcher Button -->
-      <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Light/Dark Theme" title="Toggle Theme (Graphite / Ice White)">
+      <button
+        id="theme-toggle-btn"
+        class="theme-toggle-btn"
+        aria-label="Toggle Light/Dark Theme"
+        title="Toggle Theme (Graphite / Ice White)"
+      >
         <span class="theme-label-dark">DARK</span>
         <span class="theme-sep">/</span>
         <span class="theme-label-light">LIGHT</span>
       </button>
 
       <!-- Mobile Menu Toggle -->
-      <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Open Mobile Menu" aria-expanded="false">
+      <button
+        id="mobile-menu-btn"
+        class="mobile-menu-btn"
+        aria-label="Open Mobile Menu"
+        aria-expanded="false"
+      >
         <span class="menu-bar"></span>
         <span class="menu-bar"></span>
         <span class="menu-bar"></span>
@@ -90,25 +119,43 @@ const contactsHref = `${baseUrl}/contacts`;
     </div>
     <ul class="mobile-nav-list">
       <li>
-        <a href={mainHref} class:list={['mobile-nav-link', { active: activePage === 'main' }]}>
+        <a
+          href={mainHref}
+          class:list={["mobile-nav-link", { active: activePage === "main" }]}
+        >
           <span class="num">01</span>
           <span class="text">MAIN // INDEX</span>
         </a>
       </li>
       <li>
-        <a href={aboutHref} class:list={['mobile-nav-link', { active: activePage === 'about' }]}>
+        <a
+          href={aboutHref}
+          class:list={["mobile-nav-link", { active: activePage === "about" }]}
+        >
           <span class="num">02</span>
           <span class="text">ABOUT // SPECIFICATION</span>
         </a>
       </li>
       <li>
-        <a href={portfolioHref} class:list={['mobile-nav-link', { active: activePage === 'portfolio' }]}>
+        <a
+          href={portfolioHref}
+          class:list={[
+            "mobile-nav-link",
+            { active: activePage === "portfolio" },
+          ]}
+        >
           <span class="num">03</span>
           <span class="text">PORTFOLIO // REPOSITORIES</span>
         </a>
       </li>
       <li>
-        <a href={contactsHref} class:list={['mobile-nav-link', { active: activePage === 'contacts' }]}>
+        <a
+          href={contactsHref}
+          class:list={[
+            "mobile-nav-link",
+            { active: activePage === "contacts" },
+          ]}
+        >
           <span class="num">04</span>
           <span class="text">CONTACTS // TERMINAL</span>
         </a>
@@ -132,7 +179,9 @@ const contactsHref = `${baseUrl}/contacts`;
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     z-index: 1000;
-    transition: background 0.3s ease, border-color 0.3s ease;
+    transition:
+      background 0.3s ease,
+      border-color 0.3s ease;
   }
 
   .header-inner {
@@ -153,28 +202,29 @@ const contactsHref = `${baseUrl}/contacts`;
   }
 
   .brand-logo-frame {
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--accent-primary);
-    background: rgba(250, 0, 25, 0.08);
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    color: var(--accent-primary);
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      filter 0.2s ease;
   }
 
   .brand-unit:hover .brand-logo-frame {
-    border-color: var(--accent-secondary);
-    color: var(--accent-secondary);
-    box-shadow: var(--hud-yellow-glow);
-    transform: rotate(2deg);
+    filter: drop-shadow(0 0 10px rgba(250, 150, 0, 0.8));
+    transform: scale(1.08);
   }
 
   .brand-lion-icon {
-    width: 30px;
-    height: 30px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(250, 0, 25, 0.6));
   }
 
   .brand-text-block {
@@ -194,11 +244,11 @@ const contactsHref = `${baseUrl}/contacts`;
   }
 
   .brand-red {
-    color: var(--accent-primary, #FA0019);
+    color: var(--accent-primary, #fa0019);
   }
 
   .brand-white {
-    color: #C8C8C8; /* Ice White */
+    color: #c8c8c8; /* Ice White */
   }
 
   [data-theme="light"] .brand-white {
@@ -369,7 +419,9 @@ const contactsHref = `${baseUrl}/contacts`;
     width: 100%;
     height: 2px;
     background: var(--text-primary);
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      opacity 0.2s ease;
   }
 
   /* Mobile Drawer */
@@ -446,41 +498,42 @@ const contactsHref = `${baseUrl}/contacts`;
 <script>
   // Theme Switching & Mobile Menu Logic
   function initHeaderControls() {
-    const themeBtn = document.getElementById('theme-toggle-btn');
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const mobileDrawer = document.getElementById('mobile-drawer');
+    const themeBtn = document.getElementById("theme-toggle-btn");
+    const mobileBtn = document.getElementById("mobile-menu-btn");
+    const mobileDrawer = document.getElementById("mobile-drawer");
 
     // Theme Toggle
     if (themeBtn) {
-      themeBtn.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', nextTheme);
-        localStorage.setItem('rll-theme', nextTheme);
+      themeBtn.addEventListener("click", () => {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme") || "dark";
+        const nextTheme = currentTheme === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", nextTheme);
+        localStorage.setItem("rll-theme", nextTheme);
       });
     }
 
     // Mobile Menu Toggle
     if (mobileBtn && mobileDrawer) {
-      mobileBtn.addEventListener('click', () => {
-        const isOpen = mobileDrawer.classList.toggle('open');
-        mobileBtn.setAttribute('aria-expanded', String(isOpen));
-        mobileDrawer.setAttribute('aria-hidden', String(!isOpen));
+      mobileBtn.addEventListener("click", () => {
+        const isOpen = mobileDrawer.classList.toggle("open");
+        mobileBtn.setAttribute("aria-expanded", String(isOpen));
+        mobileDrawer.setAttribute("aria-hidden", String(!isOpen));
       });
 
       // Close on link click
-      mobileDrawer.querySelectorAll('a').forEach((link) => {
-        link.addEventListener('click', () => {
-          mobileDrawer.classList.remove('open');
-          mobileBtn.setAttribute('aria-expanded', 'false');
-          mobileDrawer.setAttribute('aria-hidden', 'true');
+      mobileDrawer.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileDrawer.classList.remove("open");
+          mobileBtn.setAttribute("aria-expanded", "false");
+          mobileDrawer.setAttribute("aria-hidden", "true");
         });
       });
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHeaderControls);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHeaderControls);
   } else {
     initHeaderControls();
   }
