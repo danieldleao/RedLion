@@ -1,0 +1,416 @@
+---
+// Engineering Matrix List View Component for Repositories
+---
+
+<div class="repo-list-container" id="list-viewport">
+  <!-- Filter & Search Console -->
+  <div class="list-controls-panel hud-panel cad-frame">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="repo-search-input" placeholder="SEARCH REPOSITORIES BY NAME, KEYWORD, OR METRIC..." aria-label="Search repositories" />
+    </div>
+
+    <!-- Language Filter Chips -->
+    <div class="lang-filter-bar" id="lang-filter-bar">
+      <button class="filter-chip active" data-lang="all">ALL [00]</button>
+      <button class="filter-chip" data-lang="JavaScript">JAVASCRIPT</button>
+      <button class="filter-chip" data-lang="TypeScript">TYPESCRIPT</button>
+      <button class="filter-chip" data-lang="Python">PYTHON</button>
+      <button class="filter-chip" data-lang="Java">JAVA</button>
+      <button class="filter-chip" data-lang="Astro">ASTRO</button>
+    </div>
+  </div>
+
+  <!-- Repos Matrix Grid -->
+  <div class="repos-matrix-grid" id="repos-matrix-grid">
+    <div class="list-loading-state" id="list-loading">
+      <div class="status-dot"></div>
+      <span>FETCHING TELEMETRY STREAM FROM GITHUB...</span>
+    </div>
+  </div>
+
+  <!-- Telemetry Summary Bar -->
+  <div class="matrix-summary-bar">
+    <span id="matrix-count-display">SHOWING 0 REPOSITORIES</span>
+    <span>PROFILE: @danieldleao // SOURCE: GITHUB API V3</span>
+  </div>
+</div>
+
+<style>
+  .repo-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .list-controls-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+    padding: 0.6rem 1rem;
+  }
+
+  .search-icon {
+    font-size: 0.9rem;
+    color: var(--accent-secondary);
+  }
+
+  .search-box input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    letter-spacing: 0.05em;
+  }
+
+  .search-box input::placeholder {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+  }
+
+  .lang-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .filter-chip {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-dim);
+    color: var(--text-secondary);
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.2s ease;
+  }
+
+  .filter-chip:hover {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+  }
+
+  .filter-chip.active {
+    background: rgba(250, 0, 25, 0.1);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    font-weight: 700;
+  }
+
+  .repos-matrix-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .repos-matrix-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .repos-matrix-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .list-loading-state {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 3rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+  }
+
+  /* Matrix Item Card */
+  :global(.matrix-card) {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  :global(.matrix-card:hover) {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), var(--hud-glow);
+  }
+
+  :global(.matrix-card-top) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  :global(.matrix-card-meta) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+
+  :global(.matrix-lang-tag) {
+    padding: 2px 6px;
+    background: rgba(250, 150, 0, 0.1);
+    border: 1px solid rgba(250, 150, 0, 0.3);
+    color: var(--accent-secondary);
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  :global(.matrix-card-title) {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--text-primary);
+    letter-spacing: 0.05em;
+  }
+
+  :global(.matrix-card-desc) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  :global(.matrix-card-actions) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-dim);
+    padding-top: 0.85rem;
+    margin-top: auto;
+  }
+
+  :global(.matrix-metrics) {
+    display: flex;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  :global(.matrix-links) {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  :global(.matrix-btn) {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    background: transparent;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  :global(.matrix-btn:hover) {
+    background: var(--accent-primary);
+    color: #FFFFFF;
+  }
+
+  .matrix-summary-bar {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding: 0.75rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+  }
+</style>
+
+<script>
+  function initRepoList() {
+    const grid = document.getElementById('repos-matrix-grid');
+    const loadingElem = document.getElementById('list-loading');
+    const searchInput = document.getElementById('repo-search-input') as HTMLInputElement;
+    const filterBar = document.getElementById('lang-filter-bar');
+    const countDisplay = document.getElementById('matrix-count-display');
+
+    if (!grid) return;
+
+    let allRepos: any[] = [];
+    let activeLang = 'all';
+    let searchQuery = '';
+
+    // Fallback data
+    const FALLBACK_LIST = [
+      {
+        id: 101,
+        name: "RedLion",
+        description: "Official Red Lion Labs static website repository, engineered with Astro, CAD aesthetics, and dynamic portfolio integration.",
+        language: "Astro",
+        stargazers_count: 3,
+        forks_count: 0,
+        updated_at: "2026-08-31T20:00:00Z",
+        html_url: "https://github.com/danieldleao/RedLion",
+        homepage: "https://danieldleao.github.io/RedLion/"
+      },
+      {
+        id: 102,
+        name: "BIM-Parametric-Engine",
+        description: "Algorithmic geometry generator bridging Dynamo/Revit visual programming logic to web-based computational canvas shaders.",
+        language: "JavaScript",
+        stargazers_count: 5,
+        forks_count: 1,
+        updated_at: "2026-08-25T14:30:00Z",
+        html_url: "https://github.com/danieldleao",
+        homepage: null
+      },
+      {
+        id: 103,
+        name: "CAD-Coordinate-Matrix",
+        description: "High-precision CAD crosshair and coordinate mapping engine built for technical inspection instruments.",
+        language: "TypeScript",
+        stargazers_count: 2,
+        forks_count: 0,
+        updated_at: "2026-08-18T10:15:00Z",
+        html_url: "https://github.com/danieldleao",
+        homepage: null
+      },
+      {
+        id: 104,
+        name: "OOP-Data-Structures-Lab",
+        description: "Comprehensive implementation of data structures, search algorithms, and computational patterns in Java and Python.",
+        language: "Java",
+        stargazers_count: 4,
+        forks_count: 0,
+        updated_at: "2026-08-10T09:00:00Z",
+        html_url: "https://github.com/danieldleao",
+        homepage: null
+      },
+      {
+        id: 105,
+        name: "Architectural-Detailing-Specs",
+        description: "Technical specification database and automated schedule parser for architecture and fabrication workflows.",
+        language: "Python",
+        stargazers_count: 1,
+        forks_count: 0,
+        updated_at: "2026-07-28T16:45:00Z",
+        html_url: "https://github.com/danieldleao",
+        homepage: null
+      }
+    ];
+
+    async function fetchRepos() {
+      try {
+        const res = await fetch('https://api.github.com/users/danieldleao/repos?sort=updated&per_page=100');
+        if (!res.ok) throw new Error('API error');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          allRepos = data;
+        } else {
+          allRepos = FALLBACK_LIST;
+        }
+      } catch {
+        allRepos = FALLBACK_LIST;
+      }
+      if (loadingElem) loadingElem.style.display = 'none';
+      renderList();
+    }
+
+    function renderList() {
+      grid!.innerHTML = '';
+      
+      const filtered = allRepos.filter((repo) => {
+        const matchesLang = activeLang === 'all' || (repo.language && repo.language.toLowerCase() === activeLang.toLowerCase());
+        const matchesQuery = !searchQuery || 
+          repo.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          (repo.description && repo.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
+          (repo.language && repo.language.toLowerCase().includes(searchQuery.toLowerCase()));
+        return matchesLang && matchesQuery;
+      });
+
+      if (countDisplay) {
+        countDisplay.textContent = `SHOWING ${filtered.length} OF ${allRepos.length} REPOSITORIES`;
+      }
+
+      if (filtered.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'list-loading-state';
+        empty.innerHTML = `<span>NO REPOSITORIES MATCH SPECIFIED FILTER CRITERIA</span>`;
+        grid!.appendChild(empty);
+        return;
+      }
+
+      filtered.forEach((repo) => {
+        const card = document.createElement('div');
+        card.className = 'matrix-card cad-frame';
+        const updatedFormatted = new Date(repo.updated_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+        card.innerHTML = `
+          <div class="matrix-card-top">
+            <div class="matrix-card-meta">
+              <span class="matrix-lang-tag">${repo.language || 'MULTI/DOCS'}</span>
+              <span>UPDATED: ${updatedFormatted}</span>
+            </div>
+            <h3 class="matrix-card-title">${repo.name}</h3>
+            <p class="matrix-card-desc">${repo.description || 'Architectural software development project and computational lab experiments.'}</p>
+          </div>
+          <div class="matrix-card-actions">
+            <div class="matrix-metrics">
+              <span>★ ${repo.stargazers_count}</span>
+              <span>⑂ ${repo.forks_count}</span>
+            </div>
+            <div class="matrix-links">
+              ${repo.homepage ? `<a href="${repo.homepage}" target="_blank" rel="noopener noreferrer" class="matrix-btn">DEMO ↗</a>` : ''}
+              <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer" class="matrix-btn">GITHUB ↗</a>
+            </div>
+          </div>
+        `;
+        grid!.appendChild(card);
+      });
+    }
+
+    searchInput?.addEventListener('input', (e) => {
+      searchQuery = (e.target as HTMLInputElement).value;
+      renderList();
+    });
+
+    filterBar?.querySelectorAll('.filter-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        filterBar.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        activeLang = chip.getAttribute('data-lang') || 'all';
+        renderList();
+      });
+    });
+
+    fetchRepos();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initRepoList);
+  } else {
+    initRepoList();
+  }
+</script>

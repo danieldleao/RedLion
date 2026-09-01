@@ -1,0 +1,273 @@
+---
+// Interactive CAD/BIM Blueprint Architectural Schematic Component
+---
+
+<div class="blueprint-panel hud-panel cad-frame">
+  <div class="blueprint-header">
+    <div class="blueprint-meta">
+      <span class="hud-pill">SCHEMATIC: BIM_CODE_ARCH_02</span>
+      <span class="hud-sub">STRUCTURAL AXES // MEP CIRCUITS // LOGIC PIPELINES</span>
+    </div>
+    <!-- Layer Selector Switches -->
+    <div class="layer-switches" id="blueprint-layer-toggles">
+      <button class="layer-btn active" data-layer="grid">
+        <span class="layer-dot"></span>
+        <span>GRID (A-E)</span>
+      </button>
+      <button class="layer-btn active" data-layer="circuits">
+        <span class="layer-dot"></span>
+        <span>CIRCUITS</span>
+      </button>
+      <button class="layer-btn active" data-layer="dimensions">
+        <span class="layer-dot"></span>
+        <span>DIMENSIONS</span>
+      </button>
+      <button class="layer-btn active" data-layer="code">
+        <span class="layer-dot"></span>
+        <span>CODE NODES</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SVG Architectural Blueprint Viewport -->
+  <div class="blueprint-viewport">
+    <svg id="blueprint-svg" class="blueprint-svg" viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="bp-small-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(250, 0, 25, 0.08)" stroke-width="0.75" />
+        </pattern>
+        <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#FA9600"/>
+        </marker>
+      </defs>
+
+      <!-- Background Grid -->
+      <rect width="100%" height="100%" fill="url(#bp-small-grid)" />
+
+      <!-- Layer 1: Structural Grid & Centerlines -->
+      <g id="layer-grid" class="bp-layer">
+        <!-- Structural Axes -->
+        <line x1="80" y1="40" x2="80" y2="400" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+        <line x1="240" y1="40" x2="240" y2="400" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+        <line x1="400" y1="40" x2="400" y2="400" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+        <line x1="560" y1="40" x2="560" y2="400" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+        <line x1="720" y1="40" x2="720" y2="400" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+
+        <line x1="40" y1="90" x2="760" y2="90" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+        <line x1="40" y1="225" x2="760" y2="225" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+        <line x1="40" y1="360" x2="760" y2="360" stroke="#FA0019" stroke-width="1.2" stroke-dasharray="6,4" />
+
+        <!-- Axis Bubble Markers -->
+        <circle cx="80" cy="30" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="80" y="34" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">A</text>
+
+        <circle cx="240" cy="30" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="240" y="34" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">B</text>
+
+        <circle cx="400" cy="30" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="400" y="34" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">C</text>
+
+        <circle cx="560" cy="30" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="560" y="34" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">D</text>
+
+        <circle cx="720" cy="30" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="720" y="34" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">E</text>
+
+        <circle cx="30" cy="90" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="30" y="94" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">01</text>
+
+        <circle cx="30" cy="225" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="30" y="229" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">02</text>
+
+        <circle cx="30" cy="360" r="12" fill="#191919" stroke="#FA0019" stroke-width="1.5"/>
+        <text x="30" y="364" fill="#C8C8C8" font-size="10" font-family="'Orbitron', sans-serif" text-anchor="middle">03</text>
+      </g>
+
+      <!-- Layer 2: Electrical / MEP / Logic Circuit Traces -->
+      <g id="layer-circuits" class="bp-layer">
+        <!-- Main structural boundary -->
+        <polygon points="120,110 360,110 400,150 680,150 680,330 120,330" fill="rgba(250, 0, 25, 0.05)" stroke="#C8C8C8" stroke-width="2" />
+        
+        <!-- Circuit traces connecting modules -->
+        <path d="M 200 110 L 200 180 L 320 180 L 320 250" fill="none" stroke="#FA0019" stroke-width="2" />
+        <circle cx="200" cy="110" r="4" fill="#FA0019" />
+        <circle cx="320" cy="250" r="4" fill="#FA0019" />
+
+        <path d="M 480 150 L 480 225 L 600 225 L 600 300" fill="none" stroke="#FA9600" stroke-width="2" />
+        <circle cx="480" cy="150" r="4" fill="#FA9600" />
+        <circle cx="600" cy="300" r="4" fill="#FA9600" />
+
+        <!-- Diagonal parametric brace -->
+        <line x1="120" y1="330" x2="240" y2="225" stroke="#FA0019" stroke-width="1.5" stroke-dasharray="3,3" />
+        <line x1="680" y1="330" x2="560" y2="225" stroke="#FA0019" stroke-width="1.5" stroke-dasharray="3,3" />
+      </g>
+
+      <!-- Layer 3: Engineering Dimensions & Tolerances -->
+      <g id="layer-dimensions" class="bp-layer">
+        <!-- Top Dimension Line -->
+        <line x1="120" y1="75" x2="680" y2="75" stroke="#FA9600" stroke-width="1.2" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+        <line x1="120" y1="70" x2="120" y2="105" stroke="#FA9600" stroke-width="1" />
+        <line x1="680" y1="70" x2="680" y2="145" stroke="#FA9600" stroke-width="1" />
+        <text x="400" y="70" fill="#FA9600" font-family="'Atkinson Hyperlegible Mono', monospace" font-size="11" text-anchor="middle">5600 mm ± 0.05 [L-SPAN]</text>
+
+        <!-- Vertical Dimension Line -->
+        <line x1="740" y1="150" x2="740" y2="330" stroke="#FA9600" stroke-width="1.2" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+        <line x1="685" y1="150" x2="745" y2="150" stroke="#FA9600" stroke-width="1" />
+        <line x1="685" y1="330" x2="745" y2="330" stroke="#FA9600" stroke-width="1" />
+        <text x="750" y="245" fill="#FA9600" font-family="'Atkinson Hyperlegible Mono', monospace" font-size="10" transform="rotate(90, 750, 245)" text-anchor="middle">1800 mm [H-BOUND]</text>
+      </g>
+
+      <!-- Layer 4: Software Architecture Component Interfaces -->
+      <g id="layer-code" class="bp-layer">
+        <!-- Module 1: Parametric Core -->
+        <rect x="150" y="140" width="130" height="70" fill="#191919" stroke="#FA0019" stroke-width="1.5" />
+        <text x="215" y="165" fill="#FA0019" font-family="'Orbitron', sans-serif" font-size="10" font-weight="bold" text-anchor="middle">CORE::MESH_GEN</text>
+        <text x="215" y="185" fill="#C8C8C8" font-family="'Atkinson Hyperlegible Mono', monospace" font-size="8" text-anchor="middle">TYPE: ASTRO_SSG</text>
+        <text x="215" y="198" fill="#FA9600" font-family="'Atkinson Hyperlegible Mono', monospace" font-size="7" text-anchor="middle">STATUS: NOMINAL</text>
+
+        <!-- Module 2: Data Dispatcher -->
+        <rect x="420" y="240" width="140" height="70" fill="#191919" stroke="#FA9600" stroke-width="1.5" />
+        <text x="490" y="265" fill="#FA9600" font-family="'Orbitron', sans-serif" font-size="10" font-weight="bold" text-anchor="middle">DATA::GITHUB_API</text>
+        <text x="490" y="285" fill="#C8C8C8" font-family="'Atkinson Hyperlegible Mono', monospace" font-size="8" text-anchor="middle">FETCH: ASYNC_STREAM</text>
+        <text x="490" y="298" fill="#FA0019" font-family="'Atkinson Hyperlegible Mono', monospace" font-size="7" text-anchor="middle">POLL: 60s INTERVAL</text>
+
+        <!-- Connection Bus Line -->
+        <line x1="280" y1="175" x2="420" y2="275" stroke="#C8C8C8" stroke-width="1.5" stroke-dasharray="4,4" />
+        <circle cx="350" cy="225" r="5" fill="#FA0019" />
+        <text x="360" y="222" fill="#C8C8C8" font-family="'Atkinson Hyperlegible Mono', monospace" font-size="7">EVENT_BUS</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<style>
+  .blueprint-panel {
+    border-color: var(--border-strong);
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .blueprint-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-dim);
+    margin-bottom: 1.5rem;
+  }
+
+  .blueprint-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .hud-pill {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent-primary);
+  }
+
+  .hud-sub {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+  }
+
+  .layer-switches {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .layer-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.65rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .layer-btn .layer-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--text-muted);
+    border-radius: 50%;
+  }
+
+  .layer-btn.active {
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+    background: rgba(250, 0, 25, 0.08);
+  }
+
+  .layer-btn.active .layer-dot {
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary);
+  }
+
+  .blueprint-viewport {
+    background: #0E0E0E;
+    border: 1px solid var(--border-dim);
+    overflow: hidden;
+    position: relative;
+  }
+
+  [data-theme="light"] .blueprint-viewport {
+    background: #F0F0F0;
+  }
+
+  .blueprint-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .bp-layer {
+    transition: opacity 0.3s ease;
+  }
+
+  .bp-layer.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+</style>
+
+<script>
+  function initBlueprintToggles() {
+    const container = document.getElementById('blueprint-layer-toggles');
+    if (!container) return;
+
+    const buttons = container.querySelectorAll('.layer-btn');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const layerKey = btn.getAttribute('data-layer');
+        if (!layerKey) return;
+        const layerElem = document.getElementById(`layer-${layerKey}`);
+        if (!layerElem) return;
+
+        const isActive = btn.classList.toggle('active');
+        if (isActive) {
+          layerElem.classList.remove('is-hidden');
+        } else {
+          layerElem.classList.add('is-hidden');
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBlueprintToggles);
+  } else {
+    initBlueprintToggles();
+  }
+</script>

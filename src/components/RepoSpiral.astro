@@ -1,0 +1,913 @@
+---
+// Archimedean Spiral Orbital Portfolio View Component
+---
+
+<div class="repo-spiral-container" id="spiral-viewport">
+  <!-- Spiral HUD Controls Bar -->
+  <div class="spiral-hud-bar">
+    <div class="hud-item">
+      <span class="hud-label">TRAJECTORY:</span>
+      <span class="hud-value" id="spiral-index-display">NODE 01 / 00</span>
+    </div>
+    <div class="hud-item">
+      <span class="hud-label">ORBITAL ANGLE:</span>
+      <span class="hud-value" id="spiral-angle-display">0.00 rad</span>
+    </div>
+    <div class="spiral-nav-buttons">
+      <button
+        class="cad-btn cad-btn-secondary"
+        id="spiral-prev-btn"
+        aria-label="Previous Repository in Spiral"
+      >
+        <span>▲ PREV NODE</span>
+      </button>
+      <button
+        class="cad-btn cad-btn-primary"
+        id="spiral-next-btn"
+        aria-label="Next Repository in Spiral"
+      >
+        <span>▼ NEXT NODE</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Central Orbital Radar & Coordinate Canvas -->
+  <canvas id="spiral-radar-canvas" class="spiral-radar-canvas"></canvas>
+
+  <!-- Dynamic Spiral Cards Container (populated by script) -->
+  <div class="spiral-stage" id="spiral-stage">
+    <div class="spiral-empty-state" id="spiral-loading">
+      <div class="status-dot"></div>
+      <span>SCANNING GITHUB REPOSITORY TELEMETRY...</span>
+    </div>
+  </div>
+
+  <!-- Spiral Trajectory Indicator Scrollbar / Track -->
+  <div class="spiral-track">
+    <div class="spiral-thumb" id="spiral-thumb"></div>
+  </div>
+</div>
+
+<!-- Architectural Spec Sheet Modal -->
+<dialog id="repo-spec-modal" class="repo-modal">
+  <div class="modal-content hud-panel cad-frame">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <span class="modal-tag">SPECIFICATION SHEET // REPOSITORY</span>
+        <h3 id="modal-repo-name" class="modal-title">REPOSITORY_NAME</h3>
+      </div>
+      <button
+        id="modal-close-btn"
+        class="modal-close"
+        aria-label="Close Specification Sheet">✕</button
+      >
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid">
+        <div class="modal-info-col">
+          <div class="info-group">
+            <span class="label">PRIMARY LANGUAGE:</span>
+            <span id="modal-repo-lang" class="value highlight-yellow"
+              >JavaScript</span
+            >
+          </div>
+          <div class="info-group">
+            <span class="label">LAST TELEMETRY UPDATE:</span>
+            <span id="modal-repo-updated" class="value">2026-08-30</span>
+          </div>
+          <div class="info-group">
+            <span class="label">STARS / FORKS:</span>
+            <span id="modal-repo-metrics" class="value">★ 0 | ⑂ 0</span>
+          </div>
+          <div class="info-group">
+            <span class="label">CLONE COMMAND:</span>
+            <div class="clone-box">
+              <code id="modal-repo-clone">git clone https://...</code>
+              <button
+                id="modal-copy-clone-btn"
+                class="copy-btn"
+                title="Copy Clone Command">COPY</button
+              >
+            </div>
+          </div>
+        </div>
+        <div class="modal-desc-col">
+          <span class="label">TECHNICAL SUMMARY & SCOPE:</span>
+          <p id="modal-repo-desc" class="modal-desc-text">
+            Repository description...
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a
+        id="modal-repo-link"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cad-btn cad-btn-primary"
+      >
+        <span>VIEW ON GITHUB ↗</span>
+      </a>
+      <a
+        id="modal-demo-link"
+        href="#"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="cad-btn cad-btn-secondary"
+        style="display: none;"
+      >
+        <span>LAUNCH LIVE DEMO ↗</span>
+      </a>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .repo-spiral-container {
+    position: relative;
+    width: 100%;
+    min-height: 680px;
+    height: clamp(680px, 80vh, 900px);
+    background: radial-gradient(
+      circle at center,
+      rgba(30, 20, 20, 0.4) 0%,
+      rgba(15, 15, 15, 0.98) 80%
+    );
+    border: 1px solid var(--border-strong);
+    overflow: hidden;
+    user-select: none;
+  }
+
+  [data-theme="light"] .repo-spiral-container {
+    background: radial-gradient(
+      circle at center,
+      rgba(230, 230, 230, 0.7) 0%,
+      rgba(195, 195, 195, 0.95) 80%
+    );
+  }
+
+  .spiral-hud-bar {
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    right: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    z-index: 20;
+    pointer-events: auto;
+    background: rgba(18, 18, 18, 0.85);
+    border: 1px solid var(--border-dim);
+    padding: 0.6rem 1.25rem;
+    backdrop-filter: blur(8px);
+  }
+
+  [data-theme="light"] .spiral-hud-bar {
+    background: rgba(225, 225, 225, 0.9);
+  }
+
+  .hud-item {
+    display: flex;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .hud-label {
+    color: var(--text-muted);
+  }
+
+  .hud-value {
+    color: var(--accent-secondary);
+    font-weight: 700;
+  }
+
+  .spiral-nav-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .spiral-nav-buttons .cad-btn {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.72rem;
+  }
+
+  .spiral-radar-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .spiral-stage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1200px;
+    transform-style: preserve-3d;
+  }
+
+  .spiral-empty-state {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    padding: 1.5rem 2.5rem;
+  }
+
+  /* Spiral Card Layout */
+  :global(.spiral-card) {
+    position: absolute;
+    width: clamp(290px, 32vw, 440px);
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    padding: 1.5rem;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition:
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 0.4s ease,
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+    will-change: transform, opacity;
+    cursor: grab;
+  }
+
+  :global(.spiral-card:hover) {
+    border-color: var(--accent-primary);
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.5),
+      var(--hud-glow);
+  }
+
+  :global(.spiral-card.is-active) {
+    border-color: var(--accent-primary);
+    border-width: 1.5px;
+    box-shadow:
+      0 15px 40px rgba(0, 0, 0, 0.6),
+      var(--hud-glow);
+    z-index: 30 !important;
+  }
+
+  :global(.spiral-card-header) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 0.6rem;
+    margin-bottom: 0.85rem;
+  }
+
+  :global(.spiral-card-num) {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent-secondary);
+    font-weight: 700;
+  }
+
+  :global(.spiral-card-lang) {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    background: rgba(250, 0, 25, 0.1);
+    border: 1px solid var(--border-strong);
+    color: var(--accent-primary);
+    text-transform: uppercase;
+  }
+
+  :global(.spiral-card-title) {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--text-primary);
+    margin-bottom: 0.6rem;
+    word-break: break-word;
+    letter-spacing: 0.05em;
+  }
+
+  :global(.spiral-card-desc) {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  :global(.spiral-card-footer) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-dim);
+    padding-top: 0.75rem;
+    margin-top: auto;
+  }
+
+  :global(.spiral-card-metrics) {
+    display: flex;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  :global(.spiral-card-btn) {
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.65rem;
+    background: transparent;
+    border: 1px solid var(--accent-primary);
+    color: var(--accent-primary);
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.2s ease;
+  }
+
+  :global(.spiral-card-btn:hover) {
+    background: var(--accent-primary);
+    color: #ffffff;
+  }
+
+  /* Track Scrollbar Indicator */
+  .spiral-track {
+    position: absolute;
+    bottom: 1rem;
+    left: 10%;
+    right: 10%;
+    height: 3px;
+    background: rgba(200, 200, 200, 0.15);
+    z-index: 20;
+  }
+
+  .spiral-thumb {
+    height: 100%;
+    width: 20%;
+    background: var(--accent-primary);
+    box-shadow: 0 0 8px var(--accent-primary);
+    transition:
+      transform 0.2s ease,
+      width 0.2s ease;
+  }
+
+  /* Modal */
+  .repo-modal {
+    border: none;
+    background: transparent;
+    max-width: 650px;
+    width: 92%;
+    margin: auto;
+    padding: 0;
+  }
+
+  .repo-modal::backdrop {
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(8px);
+  }
+
+  .modal-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    padding: 2rem;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .modal-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent-secondary);
+    letter-spacing: 0.1em;
+  }
+
+  .modal-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    color: var(--accent-primary);
+    margin-top: 0.25rem;
+  }
+
+  .modal-close {
+    background: transparent;
+    border: 1px solid var(--border-dim);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .modal-close:hover {
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+  }
+
+  .modal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .modal-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .info-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .info-group .label {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+  }
+
+  .info-group .value {
+    color: var(--text-primary);
+  }
+
+  .clone-box {
+    display: flex;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-dim);
+    padding: 0.4rem 0.6rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+  }
+
+  .clone-box code {
+    font-size: 0.7rem;
+    color: var(--accent-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .copy-btn {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+  }
+
+  .modal-desc-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+  }
+
+  .modal-desc-col .label {
+    color: var(--text-muted);
+    font-size: 0.68rem;
+  }
+
+  .modal-desc-text {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-dim);
+    padding-top: 1.25rem;
+  }
+</style>
+
+<script>
+  // Spiral Trajectory & GitHub Repos Controller
+  interface GitHubRepo {
+    id: number;
+    name: string;
+    description: string | null;
+    language: string | null;
+    stargazers_count: number;
+    forks_count: number;
+    updated_at: string;
+    html_url: string;
+    homepage: string | null;
+    clone_url: string;
+  }
+
+  // Fallback / Offline Data snapshot for redundancy
+  const FALLBACK_REPOS: GitHubRepo[] = [
+    {
+      id: 101,
+      name: "RedLion",
+      description:
+        "Official Red Lion Labs static website repository, engineered with Astro, CAD aesthetics, and dynamic portfolio integration.",
+      language: "Astro",
+      stargazers_count: 3,
+      forks_count: 0,
+      updated_at: "2026-08-31T20:00:00Z",
+      html_url: "https://github.com/danieldleao/RedLion",
+      homepage: "https://danieldleao.github.io/RedLion/",
+      clone_url: "https://github.com/danieldleao/RedLion.git",
+    },
+    {
+      id: 102,
+      name: "BIM-Parametric-Engine",
+      description:
+        "Algorithmic geometry generator bridging Dynamo/Revit visual programming logic to web-based computational canvas shaders.",
+      language: "JavaScript",
+      stargazers_count: 5,
+      forks_count: 1,
+      updated_at: "2026-08-25T14:30:00Z",
+      html_url: "https://github.com/danieldleao",
+      homepage: null,
+      clone_url: "https://github.com/danieldleao/BIM-Parametric-Engine.git",
+    },
+    {
+      id: 103,
+      name: "CAD-Coordinate-Matrix",
+      description:
+        "High-precision CAD crosshair and coordinate mapping engine built for technical inspection instruments.",
+      language: "TypeScript",
+      stargazers_count: 2,
+      forks_count: 0,
+      updated_at: "2026-08-18T10:15:00Z",
+      html_url: "https://github.com/danieldleao",
+      homepage: null,
+      clone_url: "https://github.com/danieldleao/CAD-Coordinate-Matrix.git",
+    },
+    {
+      id: 104,
+      name: "OOP-Data-Structures-Lab",
+      description:
+        "Comprehensive implementation of data structures, search algorithms, and computational patterns in Java and Python.",
+      language: "Java",
+      stargazers_count: 4,
+      forks_count: 0,
+      updated_at: "2026-08-10T09:00:00Z",
+      html_url: "https://github.com/danieldleao",
+      homepage: null,
+      clone_url: "https://github.com/danieldleao/OOP-Data-Structures-Lab.git",
+    },
+    {
+      id: 105,
+      name: "Architectural-Detailing-Specs",
+      description:
+        "Technical specification database and automated schedule parser for architecture and fabrication workflows.",
+      language: "Python",
+      stargazers_count: 1,
+      forks_count: 0,
+      updated_at: "2026-07-28T16:45:00Z",
+      html_url: "https://github.com/danieldleao",
+      homepage: null,
+      clone_url:
+        "https://github.com/danieldleao/Architectural-Detailing-Specs.git",
+    },
+  ];
+
+  let repos: GitHubRepo[] = [];
+  let currentIndex = 0;
+  let targetIndex = 0;
+
+  async function fetchGitHubRepos(): Promise<GitHubRepo[]> {
+    try {
+      const response = await fetch(
+        "https://api.github.com/users/danieldleao/repos?sort=updated&per_page=100",
+      );
+      if (!response.ok) {
+        throw new Error(`GitHub API error ${response.status}`);
+      }
+      const data = await response.json();
+      if (Array.isArray(data) && data.length > 0) {
+        return data;
+      }
+      return FALLBACK_REPOS;
+    } catch (err) {
+      console.warn("Using fallback repository catalog:", err);
+      return FALLBACK_REPOS;
+    }
+  }
+
+  function initSpiral() {
+    const stage = document.getElementById("spiral-stage");
+    const loadingElem = document.getElementById("spiral-loading");
+    const indexDisplay = document.getElementById("spiral-index-display");
+    const angleDisplay = document.getElementById("spiral-angle-display");
+    const prevBtn = document.getElementById("spiral-prev-btn");
+    const nextBtn = document.getElementById("spiral-next-btn");
+    const thumb = document.getElementById("spiral-thumb");
+    const radarCanvas = document.getElementById(
+      "spiral-radar-canvas",
+    ) as HTMLCanvasElement;
+    const radarCtx = radarCanvas?.getContext("2d");
+
+    const modal = document.getElementById(
+      "repo-spec-modal",
+    ) as HTMLDialogElement;
+    const modalClose = document.getElementById("modal-close-btn");
+    const modalName = document.getElementById("modal-repo-name");
+    const modalLang = document.getElementById("modal-repo-lang");
+    const modalUpdated = document.getElementById("modal-repo-updated");
+    const modalMetrics = document.getElementById("modal-repo-metrics");
+    const modalClone = document.getElementById("modal-repo-clone");
+    const modalDesc = document.getElementById("modal-repo-desc");
+    const modalLink = document.getElementById(
+      "modal-repo-link",
+    ) as HTMLAnchorElement;
+    const modalDemo = document.getElementById(
+      "modal-demo-link",
+    ) as HTMLAnchorElement;
+    const modalCopyBtn = document.getElementById("modal-copy-clone-btn");
+
+    let cardElements: HTMLElement[] = [];
+
+    // Radar Canvas
+    function resizeRadar() {
+      if (!radarCanvas) return;
+      radarCanvas.width = radarCanvas.offsetWidth * window.devicePixelRatio;
+      radarCanvas.height = radarCanvas.offsetHeight * window.devicePixelRatio;
+      radarCtx?.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    resizeRadar();
+    window.addEventListener("resize", resizeRadar);
+
+    function openModal(repo: GitHubRepo) {
+      if (!modal) return;
+      if (modalName) modalName.textContent = repo.name;
+      if (modalLang)
+        modalLang.textContent = repo.language || "Documentation / Multi";
+      if (modalUpdated)
+        modalUpdated.textContent = new Date(repo.updated_at).toLocaleDateString(
+          "en-US",
+          { year: "numeric", month: "short", day: "numeric" },
+        );
+      if (modalMetrics)
+        modalMetrics.textContent = `★ ${repo.stargazers_count} | ⑂ ${repo.forks_count}`;
+      if (modalClone)
+        modalClone.textContent = `git clone ${repo.clone_url || repo.html_url + ".git"}`;
+      if (modalDesc)
+        modalDesc.textContent =
+          repo.description ||
+          "Architectural software repository and engineering experiments.";
+      if (modalLink) modalLink.href = repo.html_url;
+      if (modalDemo) {
+        if (repo.homepage) {
+          modalDemo.style.display = "inline-flex";
+          modalDemo.href = repo.homepage;
+        } else {
+          modalDemo.style.display = "none";
+        }
+      }
+      modal.showModal();
+    }
+
+    if (modalClose) {
+      modalClose.addEventListener("click", () => modal?.close());
+    }
+    modal?.addEventListener("click", (e) => {
+      if (e.target === modal) modal.close();
+    });
+
+    if (modalCopyBtn) {
+      modalCopyBtn.addEventListener("click", () => {
+        const text = modalClone?.textContent || "";
+        navigator.clipboard.writeText(text);
+        modalCopyBtn.textContent = "COPIED!";
+        setTimeout(() => {
+          modalCopyBtn.textContent = "COPY";
+        }, 2000);
+      });
+    }
+
+    // Build Cards
+    function renderCards() {
+      if (!stage) return;
+      stage.innerHTML = "";
+      cardElements = [];
+
+      repos.forEach((repo, i) => {
+        const card = document.createElement("div");
+        card.className = "spiral-card cad-frame hud-panel";
+        card.setAttribute("data-index", String(i));
+        card.innerHTML = `
+          <div class="spiral-card-header">
+            <span class="spiral-card-num">#${String(i + 1).padStart(2, "0")} // ORBIT</span>
+            <span class="spiral-card-lang">${repo.language || "GENERAL"}</span>
+          </div>
+          <h3 class="spiral-card-title">${repo.name}</h3>
+          <p class="spiral-card-desc">${repo.description || "Architectural software engineering project."}</p>
+          <div class="spiral-card-footer">
+            <div class="spiral-card-metrics">
+              <span>★ ${repo.stargazers_count}</span>
+              <span>⑂ ${repo.forks_count}</span>
+            </div>
+            <button class="spiral-card-btn" data-spec-btn="${i}">INSPECT SPEC</button>
+          </div>
+        `;
+
+        card
+          .querySelector(`[data-spec-btn="${i}"]`)
+          ?.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openModal(repo);
+          });
+
+        card.addEventListener("click", () => {
+          targetIndex = i;
+        });
+
+        stage.appendChild(card);
+        cardElements.push(card);
+      });
+
+      updateCardsPosition();
+    }
+
+    // Mathematical Archimedean Spiral Trajectory Layout
+    function updateCardsPosition() {
+      if (cardElements.length === 0) return;
+
+      const total = cardElements.length;
+      const anglePerItem = 0.55; // radians per node in spiral
+      const radiusStep = 32; // radial distance step
+
+      cardElements.forEach((card, i) => {
+        const relativeDiff = i - currentIndex;
+        const angle = relativeDiff * anglePerItem;
+
+        // 3D Orbital Spiral coords
+        const distance = 80 + Math.abs(relativeDiff) * radiusStep;
+        const x = Math.sin(angle) * (distance * 2.2);
+        const y = Math.cos(angle) * (distance * 0.7) - 40;
+        const z = -Math.abs(relativeDiff) * 160;
+        const rotateY = -angle * 35;
+        const opacity = Math.max(0.1, 1 - Math.abs(relativeDiff) * 0.28);
+        const scale = Math.max(0.65, 1 - Math.abs(relativeDiff) * 0.12);
+
+        card.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${rotateY}deg) scale(${scale})`;
+        card.style.opacity = String(opacity);
+        card.style.zIndex = String(
+          100 - Math.round(Math.abs(relativeDiff) * 10),
+        );
+
+        if (Math.abs(relativeDiff) < 0.4) {
+          card.classList.add("is-active");
+        } else {
+          card.classList.remove("is-active");
+        }
+      });
+
+      // Update HUD
+      if (indexDisplay) {
+        const currentActive = Math.round(currentIndex) + 1;
+        indexDisplay.textContent = `NODE ${String(currentActive).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+      }
+
+      if (angleDisplay) {
+        angleDisplay.textContent = `${(currentIndex * anglePerItem).toFixed(2)} rad`;
+      }
+
+      if (thumb) {
+        const progress = (currentIndex / Math.max(1, total - 1)) * 100;
+        thumb.style.transform = `translateX(${progress * 4}%)`;
+        thumb.style.width = `${Math.max(15, 100 / total)}%`;
+      }
+
+      // Draw Radar Canvas
+      if (radarCtx && radarCanvas) {
+        const w = radarCanvas.offsetWidth;
+        const h = radarCanvas.offsetHeight;
+        radarCtx.clearRect(0, 0, w, h);
+
+        const cx = w / 2;
+        const cy = h / 2;
+
+        // Concentric Radar Rings
+        radarCtx.lineWidth = 0.8;
+        for (let r = 80; r <= 380; r += 75) {
+          radarCtx.strokeStyle = "rgba(250, 0, 25, 0.12)";
+          radarCtx.beginPath();
+          radarCtx.arc(cx, cy, r, 0, Math.PI * 2);
+          radarCtx.stroke();
+        }
+
+        // Crosshairs
+        radarCtx.strokeStyle = "rgba(200, 200, 200, 0.08)";
+        radarCtx.beginPath();
+        radarCtx.moveTo(0, cy);
+        radarCtx.lineTo(w, cy);
+        radarCtx.moveTo(cx, 0);
+        radarCtx.lineTo(cx, h);
+        radarCtx.stroke();
+
+        // Spiral Archimedean Line
+        radarCtx.strokeStyle = "rgba(250, 150, 0, 0.25)";
+        radarCtx.lineWidth = 1.2;
+        radarCtx.beginPath();
+        const maxAngle = (total + 2) * anglePerItem;
+        for (let a = 0; a <= maxAngle; a += 0.05) {
+          const r = 50 + a * 25;
+          const sx = cx + Math.sin(a - currentIndex * anglePerItem) * (r * 1.4);
+          const sy = cy + Math.cos(a - currentIndex * anglePerItem) * (r * 0.6);
+          if (a === 0) radarCtx.moveTo(sx, sy);
+          else radarCtx.lineTo(sx, sy);
+        }
+        radarCtx.stroke();
+      }
+    }
+
+    // Animation Lerp Loop
+    function loop() {
+      currentIndex += (targetIndex - currentIndex) * 0.12;
+      updateCardsPosition();
+      requestAnimationFrame(loop);
+    }
+
+    // Navigation Events
+    prevBtn?.addEventListener("click", () => {
+      targetIndex = Math.max(0, targetIndex - 1);
+    });
+
+    nextBtn?.addEventListener("click", () => {
+      targetIndex = Math.min(repos.length - 1, targetIndex + 1);
+    });
+
+    // Wheel Scroll Support inside spiral
+    const viewport = document.getElementById("spiral-viewport");
+    viewport?.addEventListener(
+      "wheel",
+      (e) => {
+        e.preventDefault();
+        if (e.deltaY > 20) {
+          targetIndex = Math.min(repos.length - 1, targetIndex + 1);
+        } else if (e.deltaY < -20) {
+          targetIndex = Math.max(0, targetIndex - 1);
+        }
+      },
+      { passive: false },
+    );
+
+    // Keyboard Arrow Keys
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        targetIndex = Math.min(repos.length - 1, targetIndex + 1);
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        targetIndex = Math.max(0, targetIndex - 1);
+      }
+    });
+
+    // Fetch and Start
+    fetchGitHubRepos().then((data) => {
+      repos = data;
+      if (loadingElem) loadingElem.style.display = "none";
+      renderCards();
+      loop();
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSpiral);
+  } else {
+    initSpiral();
+  }
+</script>

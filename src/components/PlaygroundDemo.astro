@@ -1,0 +1,377 @@
+---
+// Interactive Parametric Code & Geometry Sandbox (The Playground)
+---
+
+<div class="playground-panel hud-panel cad-frame">
+  <!-- HUD Header -->
+  <div class="playground-header">
+    <div class="header-left">
+      <span class="hud-pill">MODULE: PARAMETRIC_SANDBOX_01</span>
+      <span class="hud-sub">INTERACTIVE COMPUTATIONAL GEOMETRY ENGINE</span>
+    </div>
+    <div class="header-right">
+      <span class="status-indicator">
+        <span class="status-dot yellow"></span>
+        <span>REALTIME INTERPOLATION</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Interactive Workbench Grid -->
+  <div class="workbench-grid">
+    <!-- Controls Sidebar -->
+    <div class="controls-sidebar">
+      <div class="control-group">
+        <label for="param-freq">
+          <span>HARMONIC FREQ [Hz]</span>
+          <span class="param-val" id="val-freq">3.0</span>
+        </label>
+        <input type="range" id="param-freq" min="1" max="10" step="0.5" value="3.0" />
+      </div>
+
+      <div class="control-group">
+        <label for="param-amp">
+          <span>AMPLITUDE [mm]</span>
+          <span class="param-val" id="val-amp">45</span>
+        </label>
+        <input type="range" id="param-amp" min="10" max="90" step="5" value="45" />
+      </div>
+
+      <div class="control-group">
+        <label for="param-nodes">
+          <span>CIRCUIT DENSITY [NODES]</span>
+          <span class="param-val" id="val-nodes">24</span>
+        </label>
+        <input type="range" id="param-nodes" min="8" max="48" step="4" value="24" />
+      </div>
+
+      <div class="control-group">
+        <label for="param-twist">
+          <span>PARAMETRIC TORSION [θ]</span>
+          <span class="param-val" id="val-twist">1.2</span>
+        </label>
+        <input type="range" id="param-twist" min="0" max="3.14" step="0.1" value="1.2" />
+      </div>
+
+      <div class="button-row">
+        <button id="btn-randomize" class="cad-btn cad-btn-secondary">
+          <span>RANDOMIZE</span>
+        </button>
+        <button id="btn-toggle-flow" class="cad-btn">
+          <span>PAUSE FLOW</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Canvas Simulation & Live Code Readout -->
+    <div class="simulation-area">
+      <canvas id="playground-canvas" class="playground-canvas"></canvas>
+      
+      <!-- Live Code HUD Output -->
+      <div class="code-telemetry">
+        <div class="code-header">
+          <span>// GENERATIVE PARAMETRIC PIPELINE</span>
+          <span id="fps-counter">60 FPS</span>
+        </div>
+        <pre class="code-body"><code id="code-snippet">function evaluateMesh(t) &#123;
+  return matrix.rotate(θ = 1.20)
+    .wave(f = 3.0, a = 45)
+    .sample(nodes = 24);
+&#125;</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .playground-panel {
+    border-color: var(--border-strong);
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .playground-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-dim);
+    margin-bottom: 1.5rem;
+  }
+
+  .hud-pill {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent-primary);
+  }
+
+  .hud-sub {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-left: 0.5rem;
+  }
+
+  .workbench-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 860px) {
+    .workbench-grid {
+      grid-template-columns: 280px 1fr;
+    }
+  }
+
+  .controls-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+    padding: 1.25rem;
+  }
+
+  .control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .control-group label {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  .param-val {
+    color: var(--accent-secondary);
+    font-weight: 700;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    background: var(--border-dim);
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--accent-primary);
+    border: 1px solid var(--accent-secondary);
+    box-shadow: 0 0 6px var(--accent-primary);
+    cursor: pointer;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .button-row .cad-btn {
+    flex: 1;
+    padding: 0.55rem 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .simulation-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .playground-canvas {
+    width: 100%;
+    height: 280px;
+    background: #111111;
+    border: 1px solid var(--border-dim);
+    display: block;
+  }
+
+  [data-theme="light"] .playground-canvas {
+    background: #E0E0E0;
+  }
+
+  .code-telemetry {
+    background: #0D0D0D;
+    border: 1px solid var(--border-dim);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  [data-theme="light"] .code-telemetry {
+    background: #EDEDED;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--accent-secondary);
+    font-size: 0.68rem;
+    border-bottom: 1px dashed var(--border-dim);
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .code-body {
+    margin: 0;
+    color: var(--text-primary);
+    overflow-x: auto;
+  }
+</style>
+
+<script>
+  function initPlayground() {
+    const canvas = document.getElementById('playground-canvas') as HTMLCanvasElement;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Controls
+    const freqInput = document.getElementById('param-freq') as HTMLInputElement;
+    const ampInput = document.getElementById('param-amp') as HTMLInputElement;
+    const nodesInput = document.getElementById('param-nodes') as HTMLInputElement;
+    const twistInput = document.getElementById('param-twist') as HTMLInputElement;
+    const valFreq = document.getElementById('val-freq');
+    const valAmp = document.getElementById('val-amp');
+    const valNodes = document.getElementById('val-nodes');
+    const valTwist = document.getElementById('val-twist');
+    const codeSnippet = document.getElementById('code-snippet');
+    const btnRandomize = document.getElementById('btn-randomize');
+    const btnFlow = document.getElementById('btn-toggle-flow');
+
+    let freq = 3.0;
+    let amp = 45;
+    let nodes = 24;
+    let twist = 1.2;
+    let time = 0;
+    let isFlowing = true;
+
+    function updateLabels() {
+      if (valFreq) valFreq.textContent = freq.toFixed(1);
+      if (valAmp) valAmp.textContent = String(amp);
+      if (valNodes) valNodes.textContent = String(nodes);
+      if (valTwist) valTwist.textContent = twist.toFixed(2);
+      if (codeSnippet) {
+        codeSnippet.textContent = `function evaluateMesh(t) {\n  return matrix.rotate(θ = ${twist.toFixed(2)})\n    .wave(f = ${freq.toFixed(1)}, a = ${amp})\n    .sample(nodes = ${nodes});\n}`;
+      }
+    }
+
+    function syncInputs() {
+      if (freqInput) freq = parseFloat(freqInput.value);
+      if (ampInput) amp = parseFloat(ampInput.value);
+      if (nodesInput) nodes = parseInt(nodesInput.value, 10);
+      if (twistInput) twist = parseFloat(twistInput.value);
+      updateLabels();
+    }
+
+    [freqInput, ampInput, nodesInput, twistInput].forEach((input) => {
+      input?.addEventListener('input', syncInputs);
+    });
+
+    btnRandomize?.addEventListener('click', () => {
+      if (freqInput) freqInput.value = (1 + Math.random() * 8).toFixed(1);
+      if (ampInput) ampInput.value = String(Math.floor(15 + Math.random() * 70));
+      if (nodesInput) nodesInput.value = String(Math.floor(12 + Math.random() * 32));
+      if (twistInput) twistInput.value = (Math.random() * 3.14).toFixed(2);
+      syncInputs();
+    });
+
+    btnFlow?.addEventListener('click', () => {
+      isFlowing = !isFlowing;
+      if (btnFlow.querySelector('span')) {
+        btnFlow.querySelector('span')!.textContent = isFlowing ? 'PAUSE FLOW' : 'RESUME FLOW';
+      }
+    });
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx?.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    function render() {
+      if (!ctx) return;
+      const rect = canvas.getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      if (isFlowing) time += 0.035;
+
+      const cx = w / 2;
+      const cy = h / 2;
+      const numLines = 7;
+
+      // Draw mathematical CAD wireframe ribbon structure
+      for (let l = 0; l < numLines; l++) {
+        const lineOffset = (l - (numLines - 1) / 2) * 16;
+        const color = l === 3 ? '#FA0019' : (l % 2 === 0 ? '#FA9600' : 'rgba(200, 200, 200, 0.4)');
+
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = l === 3 ? 2 : 1;
+
+        for (let i = 0; i <= nodes; i++) {
+          const t = (i / nodes) * Math.PI * 2;
+          const x = (i / nodes) * (w - 60) + 30;
+          const y = cy + lineOffset + Math.sin(t * freq + time + l * twist) * amp;
+
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+
+          // Draw node markers
+          if (l === 3 || i % 4 === 0) {
+            ctx.save();
+            ctx.fillStyle = '#FA0019';
+            ctx.fillRect(x - 2, y - 2, 4, 4);
+            ctx.restore();
+          }
+        }
+        ctx.stroke();
+      }
+
+      // Draw crosshair axes
+      ctx.strokeStyle = 'rgba(250, 0, 25, 0.15)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(0, cy);
+      ctx.lineTo(w, cy);
+      ctx.moveTo(cx, 0);
+      ctx.lineTo(cx, h);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      requestAnimationFrame(render);
+    }
+
+    render();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPlayground);
+  } else {
+    initPlayground();
+  }
+</script>

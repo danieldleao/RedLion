@@ -1,0 +1,171 @@
+---
+// Minimalist Technical Footer Component
+---
+
+<footer class="cad-footer">
+  <div class="container footer-inner">
+    <!-- Left Spec Info -->
+    <div class="footer-left">
+      <div class="footer-brand">
+        <span class="brand-name">RED LION LABS</span>
+        <span class="spec-tag">SPEC V2.0</span>
+      </div>
+      <div class="footer-coords">
+        <span>LOC: AJAX, ONTARIO, CANADA</span>
+        <span class="coord-dot">●</span>
+        <span>LAT 43.8509° N // LON 79.0204° W</span>
+      </div>
+    </div>
+
+    <!-- Right Profile Links -->
+    <div class="footer-right">
+      <div class="footer-links-group">
+        <a href="https://github.com/danieldleao" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="GitHub Profile" title="GitHub: danieldleao">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+          <span class="footer-link-text">GITHUB</span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/danieldoroleao/" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="LinkedIn Profile" title="LinkedIn: Daniel Doro Leão">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+            <rect x="2" y="9" width="4" height="12"></rect>
+            <circle cx="4" cy="4" r="2"></circle>
+          </svg>
+          <span class="footer-link-text">LINKEDIN</span>
+        </a>
+
+        <a href="https://sites.google.com/view/danieldoroleao" target="_blank" rel="noopener noreferrer" class="footer-icon-link" aria-label="Architecture Career Archive" title="Architecture & Design Career Archive">
+          <svg class="footer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span class="footer-link-text">ARCHIVE</span>
+        </a>
+      </div>
+      <div class="footer-copy">
+        <span>© {new Date().getFullYear()} RED LION LABS. ALL RIGHTS RESERVED.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .cad-footer {
+    border-top: 1px solid var(--border-dim);
+    background: var(--bg-secondary);
+    padding: clamp(2rem, 4vw, 3rem) 0;
+    margin-top: auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: space-between;
+  }
+
+  @media (min-width: 768px) {
+    .footer-inner {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .brand-name {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--accent-primary);
+  }
+
+  .spec-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    background: rgba(250, 150, 0, 0.1);
+    border: 1px solid rgba(250, 150, 0, 0.3);
+    color: var(--accent-secondary);
+  }
+
+  .footer-coords {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .coord-dot {
+    color: var(--accent-primary);
+    font-size: 0.5rem;
+  }
+
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-right {
+      align-items: flex-end;
+    }
+  }
+
+  .footer-links-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-icon-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-dim);
+    padding: 0.35rem 0.65rem;
+    background: var(--bg-tertiary);
+    transition: all 0.2s ease;
+  }
+
+  .footer-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--accent-secondary);
+  }
+
+  .footer-icon-link:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-secondary);
+    box-shadow: var(--hud-yellow-glow);
+  }
+
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-muted);
+  }
+</style>

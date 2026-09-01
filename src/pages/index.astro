@@ -1,0 +1,538 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BootSequence from '../components/BootSequence.astro';
+import PlaygroundDemo from '../components/PlaygroundDemo.astro';
+import BlueprintDiagram from '../components/BlueprintDiagram.astro';
+import ParticleLogo from '../components/ParticleLogo.astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Red Lion Labs // Architectural Precision & Software Engineering" activePage="main">
+  <!-- 3-Second Startup Sequence -->
+  <BootSequence />
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- Left Hero Content -->
+        <div class="hero-text-content">
+          <div class="cad-dimension-line">
+            <span>SYS-INIT // LAT: 43.8509° N // LON: 79.0204° W</span>
+          </div>
+          
+          <div class="section-tag">
+            <span>LABORATORY SPEC V2.0</span>
+          </div>
+
+          <h1 class="hero-title">
+            RED LION <span class="highlight-yellow">LABS</span>
+          </h1>
+
+          <p class="hero-subhead">
+            Where architectural precision collides with software engineering.
+          </p>
+
+          <p class="lead">
+            Welcome to Red Lion Labs, a digital sandbox, creative workshop, and developer portfolio all rolled into one.
+          </p>
+
+          <p class="hero-body">
+            Think of Red Lion Labs as the collision zone between architectural precision and software engineering. A technical testing ground for experimentation, software projects, problem solving, and the combination of architectural design thinking with programming logic.
+          </p>
+
+          <div class="hero-cta-matrix">
+            <a href={`${baseUrl}/portfolio`} class="cad-btn cad-btn-primary">
+              <span>EXPLORE REPOSITORIES ↗</span>
+            </a>
+            <a href={`${baseUrl}/about`} class="cad-btn cad-btn-secondary">
+              <span>ABOUT THE LAB // SPEC</span>
+            </a>
+            <a href="#playground-section" class="cad-btn">
+              <span>LAUNCH PLAYGROUND ↓</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Hero CAD Visual -->
+        <div class="hero-visual-frame">
+          <div class="cad-frame hud-panel hero-hud-box">
+            <div class="hud-box-header">
+              <span class="hud-box-title">CAD.BIM.ENGINE_CORE</span>
+              <span class="hud-box-status">ACTIVE</span>
+            </div>
+            
+            <div class="hero-image-wrap hero-logo-wrap">
+              <img src={`${baseUrl}/Img/RedLionLogo-OutLine.svg`} alt="Red Lion Labs Core Geometric Circuit Identity" class="hero-banner-img hero-logo-img" />
+              <div class="img-overlay-grid"></div>
+            </div>
+
+            <div class="hero-telemetry-strip">
+              <div class="telemetry-item">
+                <span class="lbl">PARADIGM:</span>
+                <span class="val">PARAMETRIC OOP</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="lbl">STACK:</span>
+                <span class="val highlight-yellow">ASTRO + TS + BIM</span>
+              </div>
+              <div class="telemetry-item">
+                <span class="lbl">TOLERANCE:</span>
+                <span class="val">± 0.001 mm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 01: The Playground -->
+  <section id="playground-section" class="content-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="cad-dimension-line">
+          <span>DIM: 01 // INTERACTIVE COMPUTATIONAL SANDBOX</span>
+        </div>
+        <div class="section-tag">
+          <span>SECTION 01 // EXPERIMENTATION</span>
+        </div>
+        <h2>THE PLAYGROUND</h2>
+        <p class="section-desc">
+          A space to build, break, tweak, and polish software ideas. Manipulate algorithmic wave functions and evaluate real-time parametric logic.
+        </p>
+      </div>
+
+      <!-- Interactive Playground Component -->
+      <PlaygroundDemo />
+    </div>
+  </section>
+
+  <!-- Section 02: The Blueprint -->
+  <section id="blueprint-section" class="content-section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <div class="cad-dimension-line">
+          <span>DIM: 02 // ARCHITECTURAL SCHEMATIC MATRIX</span>
+        </div>
+        <div class="section-tag">
+          <span>SECTION 02 // ARCHITECTURE + CODE</span>
+        </div>
+        <h2>THE BLUEPRINT</h2>
+        <p class="section-desc">
+          Merging technical design standards, parametric thinking, and clean, scalable code. Explore structural layers, circuit conduits, and software component interfaces.
+        </p>
+      </div>
+
+      <!-- Interactive Blueprint Component -->
+      <BlueprintDiagram />
+    </div>
+  </section>
+
+  <!-- Section 03: The Mission -->
+  <section id="mission-section" class="content-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="cad-dimension-line">
+          <span>DIM: 03 // SYSTEMS PHILOSOPHY</span>
+        </div>
+        <div class="section-tag">
+          <span>SECTION 03 // OBJECTIVES</span>
+        </div>
+        <h2>THE MISSION</h2>
+        <p class="section-desc">
+          Showcasing practical projects, active development builds, and practical problem-solving in the open.
+        </p>
+      </div>
+
+      <div class="mission-matrix-grid">
+        <div class="mission-card hud-panel cad-frame">
+          <div class="mission-card-header">
+            <span class="mission-num">01</span>
+            <h4>SPATIAL RIGOR</h4>
+          </div>
+          <p>
+            Applying architectural detail precision, BIM coordination standards, and structural discipline to software development workflows and data modeling.
+          </p>
+          <div class="card-footer-tag">CAD / BIM / REVIT</div>
+        </div>
+
+        <div class="mission-card hud-panel cad-frame">
+          <div class="mission-card-header">
+            <span class="mission-num">02</span>
+            <h4>PARAMETRIC LOGIC</h4>
+          </div>
+          <p>
+            Treating code not merely as static syntax, but as a dynamic computational ruleset capable of generating adaptive systems and scalable architectures.
+          </p>
+          <div class="card-footer-tag">DATA STRUCTURES / OOP</div>
+        </div>
+
+        <div class="mission-card hud-panel cad-frame">
+          <div class="mission-card-header">
+            <span class="mission-num">03</span>
+            <h4>OPEN TESTING GROUND</h4>
+          </div>
+          <p>
+            Operating with radical transparency: every prototype, algorithmic experiment, and production build is documented and mirrored directly on GitHub.
+          </p>
+          <div class="card-footer-tag">OPEN SOURCE / CI-CD</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Preview Section -->
+  <section class="content-section section-alt">
+    <div class="container">
+      <div class="about-preview-grid hud-panel cad-frame">
+        <div class="preview-text">
+          <div class="section-tag">
+            <span>BIOGRAPHY // TRAJECTORY</span>
+          </div>
+          <h2>WHO IS RED LION LABS?</h2>
+          <p class="lead">
+            The evolution from architectural detailing and BIM workflows into computer programming.
+          </p>
+          <p>
+            Led by Daniel Doro Leão, Red Lion Labs synthesizes over a decade of high-precision architectural detailing and BIM coordination into modern software engineering, data structures, and object-oriented systems.
+          </p>
+          <div class="preview-actions">
+            <a href={`${baseUrl}/about`} class="cad-btn cad-btn-primary">
+              <span>READ FULL TECHNICAL SPECIFICATION ↗</span>
+            </a>
+          </div>
+        </div>
+        <div class="preview-image-wrap">
+          <img src={`${baseUrl}/Img/rlAbout.jpg`} alt="Daniel Doro Leão - Architectural and Programming Background" class="preview-img" />
+          <div class="preview-img-frame"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GitHub Repositories Preview Section -->
+  <section class="content-section">
+    <div class="container">
+      <div class="github-preview-box hud-panel cad-frame">
+        <div class="github-preview-header">
+          <div>
+            <div class="section-tag">
+              <span>OPEN REPOSITORIES // GITHUB TELEMETRY</span>
+            </div>
+            <h2>LIVE REPOSITORY PIPELINE</h2>
+          </div>
+          <a href="https://github.com/danieldleao" target="_blank" rel="noopener noreferrer" class="cad-btn cad-btn-secondary">
+            <span>GITHUB @danieldleao ↗</span>
+          </a>
+        </div>
+        <p>
+          The portfolio is directly connected to GitHub API streams. Discover projects ranging from BIM parametric logic engines to object-oriented algorithm implementations.
+        </p>
+        <div class="github-quick-actions">
+          <a href={`${baseUrl}/portfolio`} class="cad-btn cad-btn-primary">
+            <span>ENTER 3D SPIRAL PORTFOLIO VIEW ↗</span>
+          </a>
+          <a href={`${baseUrl}/portfolio?view=list`} class="cad-btn">
+            <span>SWITCH TO MATRIX LIST VIEW</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Main Section: Particle Logo Reconstruction Engine -->
+  <section class="content-section particle-ending-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <div class="cad-dimension-line">
+          <span>FINAL SPECIFICATION // GEOMETRIC RECONSTRUCTION</span>
+        </div>
+        <div class="section-tag">
+          <span>INTERACTIVE QUANTUM CANVAS</span>
+        </div>
+        <h2>CIRCUIT LION GEOMETRY</h2>
+        <p class="section-desc">
+          The Red Lion Labs emblem reconstructed via real-time physical particle simulation. Hover over the canvas to perturb the electromagnetic nodes.
+        </p>
+      </div>
+
+      <!-- Particle Logo Canvas Component -->
+      <ParticleLogo />
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .hero-section {
+    padding-block: clamp(3rem, 7vw, 6rem);
+    position: relative;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .hero-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+    }
+  }
+
+  .hero-title {
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+  }
+
+  .hero-subhead {
+    font-family: var(--font-heading);
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: var(--accent-secondary);
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-body {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta-matrix {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+  }
+
+  /* Hero Right Frame */
+  .hero-visual-frame {
+    position: relative;
+  }
+
+  .hero-hud-box {
+    padding: 1.25rem;
+    border-color: var(--border-strong);
+  }
+
+  .hud-box-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent-primary);
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.08em;
+  }
+
+  .hero-image-wrap {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-dim);
+    background: #111;
+  }
+
+  .hero-logo-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, rgba(40, 15, 15, 0.7) 0%, #0d0d0d 85%);
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4vw, 2.5rem);
+    min-height: 360px;
+  }
+
+  [data-theme="light"] .hero-logo-wrap {
+    background: radial-gradient(circle at center, rgba(230, 230, 230, 0.9) 0%, #d5d5d5 85%);
+  }
+
+  .hero-logo-img {
+    max-width: 280px;
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 20px rgba(250, 0, 25, 0.5));
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+
+  .hero-hud-box:hover .hero-logo-img {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 30px rgba(250, 0, 25, 0.8));
+  }
+
+  .hero-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: contrast(1.05);
+    transition: transform 0.4s ease;
+  }
+
+  .hero-hud-box:hover .hero-banner-img {
+    transform: scale(1.03);
+  }
+
+  .img-overlay-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(to right, rgba(250, 0, 25, 0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(250, 0, 25, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  .hero-telemetry-strip {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-dim);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+  }
+
+  .telemetry-item .lbl {
+    color: var(--text-muted);
+    margin-right: 0.35rem;
+  }
+
+  /* Content Sections */
+  .content-section {
+    padding-block: clamp(3.5rem, 8vw, 6.5rem);
+    position: relative;
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  .section-alt {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  [data-theme="light"] .section-alt {
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  .section-desc {
+    max-width: 650px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-center .section-tag, .text-center .cad-dimension-line {
+    justify-content: center;
+  }
+
+  .text-center .section-desc {
+    margin-inline: auto;
+  }
+
+  /* Mission Grid */
+  .mission-matrix-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .mission-matrix-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .mission-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.75rem;
+  }
+
+  .mission-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .mission-num {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--accent-primary);
+  }
+
+  .card-footer-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent-secondary);
+    border-top: 1px solid var(--border-dim);
+    padding-top: 0.65rem;
+    margin-top: auto;
+    letter-spacing: 0.1em;
+  }
+
+  /* About Preview */
+  .about-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    padding: clamp(1.5rem, 3.5vw, 3rem);
+  }
+
+  @media (min-width: 860px) {
+    .about-preview-grid {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+
+  .preview-image-wrap {
+    position: relative;
+    border: 1px solid var(--border-strong);
+    overflow: hidden;
+  }
+
+  .preview-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(20%) contrast(1.05);
+  }
+
+  .preview-actions {
+    margin-top: 1.5rem;
+  }
+
+  /* GitHub Preview Box */
+  .github-preview-box {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .github-preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .github-quick-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+</style>

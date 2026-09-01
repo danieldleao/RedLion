@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27" height="27" viewBox="0 0 27 27" shape-rendering="crispEdges">
+  <!-- Solid 1px grid lines in pure #FA0019 red (zero blur, crisp edges) -->
+  <line x1="0" y1="0.5" x2="27" y2="0.5" stroke="#FA0019" stroke-width="1" />
+  <line x1="0.5" y1="0" x2="0.5" y2="27" stroke="#FA0019" stroke-width="1" />
+
+  <!-- Solid crisp square node at intersection -->
+  <rect x="0" y="0" width="2" height="2" fill="#FA0019" />
+</svg>

@@ -1,0 +1,462 @@
+---
+// Interactive Particle Logo Canvas Component (reconstructing Red Lion logo)
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<div class="particle-logo-section" id="particle-logo-container" data-logo-url={`${baseUrl}/Img/RedLionLogo-OutLine.svg`}>
+  <div class="particle-hud-header">
+    <div class="particle-hud-tag">
+      <span class="hud-dot"></span>
+      <span>PARTICLE RECONSTRUCTION ENGINE // RLL-LION-01</span>
+    </div>
+    <div class="particle-controls">
+      <button id="particle-pulse-btn" class="tech-badge active" title="Trigger Electro-Magnetic Pulse">
+        <span>PULSE DISPERSION</span>
+      </button>
+      <button id="particle-reset-btn" class="tech-badge yellow" title="Reset Geometric Matrix">
+        <span>RESET MATRIX</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas id="particle-canvas" class="particle-canvas"></canvas>
+    
+    <!-- CAD Dimension overlays -->
+    <div class="canvas-cad-decor top-left">+ CAD-LOC: 0,0</div>
+    <div class="canvas-cad-decor top-right" id="particle-count-display">ARRAY: 750 PARTICLES</div>
+    <div class="canvas-cad-decor bottom-left">PHYSICS: HOOKE'S SPRING LAW</div>
+    <div class="canvas-cad-decor bottom-right">STATUS: COHERENT</div>
+  </div>
+
+  <div class="particle-footer-caption">
+    <p>
+      Interactive particle simulation reconstructing the <strong>Red Lion Labs</strong> circuit emblem from <code>RedLionLogo-OutLine.svg</code>.
+      Hover or drag over the field to displace quantum data nodes.
+    </p>
+  </div>
+</div>
+
+<style>
+  .particle-logo-section {
+    position: relative;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-card);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    margin-block: 2rem;
+  }
+
+  .particle-hud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-dim);
+    margin-bottom: 1.5rem;
+  }
+
+  .particle-hud-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-primary);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-primary);
+    box-shadow: 0 0 6px var(--accent-primary);
+  }
+
+  .particle-controls {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .particle-controls button {
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.2s ease;
+  }
+
+  .particle-controls button:hover {
+    box-shadow: var(--hud-glow);
+  }
+
+  .canvas-wrapper {
+    position: relative;
+    width: 100%;
+    height: clamp(380px, 50vh, 520px);
+    background: radial-gradient(circle at center, rgba(35, 20, 20, 0.4) 0%, rgba(15, 15, 15, 0.95) 75%);
+    border: 1px solid var(--border-dim);
+    overflow: hidden;
+  }
+
+  [data-theme="light"] .canvas-wrapper {
+    background: radial-gradient(circle at center, rgba(220, 220, 220, 0.6) 0%, rgba(190, 190, 190, 0.9) 75%);
+  }
+
+  .particle-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .canvas-cad-decor {
+    position: absolute;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    pointer-events: none;
+  }
+
+  .top-left { top: 8px; left: 12px; }
+  .top-right { top: 8px; right: 12px; color: var(--accent-secondary); }
+  .bottom-left { bottom: 8px; left: 12px; }
+  .bottom-right { bottom: 8px; right: 12px; color: var(--accent-primary); }
+
+  .particle-footer-caption {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    text-align: center;
+  }
+</style>
+
+<script>
+  function initParticleLogo() {
+    const container = document.getElementById('particle-logo-container');
+    const canvas = document.getElementById('particle-canvas') as HTMLCanvasElement;
+    if (!canvas || !container) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const pulseBtn = document.getElementById('particle-pulse-btn');
+    const resetBtn = document.getElementById('particle-reset-btn');
+    const countDisplay = document.getElementById('particle-count-display');
+    const logoUrl = container.getAttribute('data-logo-url') || '';
+
+    let width = 0;
+    let height = 0;
+    let particles: Particle[] = [];
+    let mouse = { x: -1000, y: -1000, radius: 100 };
+    let svgImage: HTMLImageElement | null = null;
+
+    interface Particle {
+      x: number;
+      y: number;
+      ox: number; // original target X
+      oy: number; // original target Y
+      vx: number;
+      vy: number;
+      size: number;
+      baseColor: string;
+      glowColor: string;
+      isAccent: boolean;
+      density: number;
+    }
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width * window.devicePixelRatio;
+      canvas.height = height * window.devicePixelRatio;
+      ctx?.scale(window.devicePixelRatio, window.devicePixelRatio);
+      buildParticles();
+    }
+
+    // Build particles from SVG image sampling with fallback coordinates
+    function buildParticles() {
+      particles = [];
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // If SVG image is loaded, sample directly from RedLionLogo-OutLine.svg
+      if (svgImage && svgImage.complete && svgImage.naturalWidth > 0) {
+        const offCanvas = document.createElement('canvas');
+        const offCtx = offCanvas.getContext('2d');
+        const sampleW = 200;
+        const sampleH = Math.round(200 * (1133.86 / 992.13)); // aspect ratio of RedLionLogo-OutLine.svg
+        offCanvas.width = sampleW;
+        offCanvas.height = sampleH;
+
+        if (offCtx) {
+          offCtx.drawImage(svgImage, 0, 0, sampleW, sampleH);
+          const imgData = offCtx.getImageData(0, 0, sampleW, sampleH);
+          const data = imgData.data;
+          const scale = Math.min(width, height) / (sampleH * 1.15);
+          const step = 4; // grid sampling density
+
+          for (let y = 0; y < sampleH; y += step) {
+            for (let x = 0; x < sampleW; x += step) {
+              const idx = (y * sampleW + x) * 4;
+              const alpha = data[idx + 3];
+              const r = data[idx];
+              const g = data[idx + 1];
+
+              if (alpha > 80 && r > 100) {
+                const targetX = cx + (x - sampleW / 2) * scale;
+                const targetY = cy + (y - sampleH / 2) * scale;
+                const isAccent = g > 80 || (x > sampleW * 0.4 && x < sampleW * 0.6 && y > sampleH * 0.35 && y < sampleH * 0.55);
+
+                const spawnX = targetX + (Math.random() - 0.5) * 40;
+                const spawnY = targetY + (Math.random() - 0.5) * 40;
+
+                particles.push({
+                  x: spawnX,
+                  y: spawnY,
+                  ox: targetX,
+                  oy: targetY,
+                  vx: (Math.random() - 0.5) * 2,
+                  vy: (Math.random() - 0.5) * 2,
+                  size: isAccent ? 2.4 : 1.6,
+                  baseColor: isAccent ? '#FA9600' : '#FA0019',
+                  glowColor: isAccent ? 'rgba(250, 150, 0, 0.8)' : 'rgba(250, 0, 25, 0.6)',
+                  isAccent,
+                  density: Math.random() * 20 + 10
+                });
+              }
+            }
+          }
+
+          if (countDisplay) {
+            countDisplay.textContent = `ARRAY: ${particles.length} PARTICLES [SVG-SAMPLED]`;
+          }
+          return;
+        }
+      }
+
+      // Mathematical vector fallback coordinates
+      const scale = Math.min(width, height) / 340;
+      const rawPoints: { x: number; y: number; accent?: boolean }[] = [];
+
+      function interpolateLine(x1: number, y1: number, x2: number, y2: number, count: number, accent = false) {
+        for (let i = 0; i <= count; i++) {
+          const t = i / count;
+          rawPoints.push({
+            x: x1 + (x2 - x1) * t,
+            y: y1 + (y2 - y1) * t,
+            accent
+          });
+        }
+      }
+
+      // Outer Crown & Mane Circuits
+      rawPoints.push({ x: 0, y: -110, accent: true });
+      interpolateLine(0, -110, 0, -80, 8, true);
+      interpolateLine(0, -80, 45, -50, 10);
+      interpolateLine(0, -80, -45, -50, 10);
+      interpolateLine(45, -50, 80, -75, 12);
+      interpolateLine(80, -75, 110, -75, 8, true);
+      rawPoints.push({ x: 110, y: -75, accent: true });
+      interpolateLine(-45, -50, -80, -75, 12);
+      interpolateLine(-80, -75, -110, -75, 8, true);
+      rawPoints.push({ x: -110, y: -75, accent: true });
+      interpolateLine(45, -20, 95, -20, 14);
+      interpolateLine(95, -20, 115, 5, 8, true);
+      rawPoints.push({ x: 115, y: 5, accent: true });
+      interpolateLine(-45, -20, -95, -20, 14);
+      interpolateLine(-95, -20, -115, 5, 8, true);
+      rawPoints.push({ x: -115, y: 5, accent: true });
+      interpolateLine(50, 15, 100, 15, 12);
+      interpolateLine(100, 15, 115, 45, 10, true);
+      rawPoints.push({ x: 115, y: 45, accent: true });
+      interpolateLine(-50, 15, -100, 15, 12);
+      interpolateLine(-100, 15, -115, 45, 10, true);
+      rawPoints.push({ x: -115, y: 45, accent: true });
+
+      // Main Face Hexagonal Boundary
+      interpolateLine(0, -80, 55, -25, 16);
+      interpolateLine(55, -25, 55, 35, 16);
+      interpolateLine(55, 35, 0, 85, 18);
+      interpolateLine(0, 85, -55, 35, 18);
+      interpolateLine(-55, 35, -55, -25, 16);
+      interpolateLine(-55, -25, 0, -80, 16);
+
+      // Inner Eye Geometry
+      interpolateLine(-35, -10, -15, -10, 6, true);
+      interpolateLine(-15, -10, -25, 10, 6, true);
+      interpolateLine(-25, 10, -35, -10, 6, true);
+      interpolateLine(15, -10, 35, -10, 6, true);
+      interpolateLine(35, -10, 25, 10, 6, true);
+      interpolateLine(25, 10, 15, -10, 6, true);
+
+      // Nose / Muzzle Diamond
+      interpolateLine(0, 5, 15, 25, 6, true);
+      interpolateLine(15, 25, 0, 45, 6, true);
+      interpolateLine(0, 45, -15, 25, 6, true);
+      interpolateLine(-15, 25, 0, 5, 6, true);
+
+      // Whiskers / Chin Circuit Traces
+      interpolateLine(0, 85, 0, 125, 12);
+      interpolateLine(0, 125, 30, 150, 8, true);
+      rawPoints.push({ x: 30, y: 150, accent: true });
+      interpolateLine(0, 125, -30, 150, 8, true);
+      rawPoints.push({ x: -30, y: 150, accent: true });
+      interpolateLine(25, 65, 55, 95, 10);
+      interpolateLine(55, 95, 55, 125, 8, true);
+      rawPoints.push({ x: 55, y: 125, accent: true });
+      interpolateLine(-25, 65, -55, 95, 10);
+      interpolateLine(-55, 95, -55, 125, 8, true);
+      rawPoints.push({ x: -55, y: 125, accent: true });
+
+      rawPoints.forEach((p) => {
+        const targetX = cx + p.x * scale;
+        const targetY = cy + p.y * scale;
+        const spawnX = targetX + (Math.random() - 0.5) * 40;
+        const spawnY = targetY + (Math.random() - 0.5) * 40;
+
+        particles.push({
+          x: spawnX,
+          y: spawnY,
+          ox: targetX,
+          oy: targetY,
+          vx: (Math.random() - 0.5) * 2,
+          vy: (Math.random() - 0.5) * 2,
+          size: p.accent ? 2.8 : 1.6,
+          baseColor: p.accent ? '#FA9600' : '#FA0019',
+          glowColor: p.accent ? 'rgba(250, 150, 0, 0.8)' : 'rgba(250, 0, 25, 0.6)',
+          isAccent: !!p.accent,
+          density: Math.random() * 20 + 10
+        });
+      });
+
+      if (countDisplay) {
+        countDisplay.textContent = `ARRAY: ${particles.length} PARTICLES`;
+      }
+    }
+
+    // Mouse Interaction
+    const rect = canvas.getBoundingClientRect();
+    canvas.addEventListener('mousemove', (e) => {
+      const b = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - b.left;
+      mouse.y = e.clientY - b.top;
+      mouse.radius = 90;
+    });
+
+    canvas.addEventListener('mouseleave', () => {
+      mouse.x = -1000;
+      mouse.y = -1000;
+    });
+
+    // Control buttons
+    if (pulseBtn) {
+      pulseBtn.addEventListener('click', () => {
+        particles.forEach((p) => {
+          const angle = Math.random() * Math.PI * 2;
+          const force = 12 + Math.random() * 15;
+          p.vx += Math.cos(angle) * force;
+          p.vy += Math.sin(angle) * force;
+        });
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        particles.forEach((p) => {
+          p.x = p.ox;
+          p.y = p.oy;
+          p.vx = 0;
+          p.vy = 0;
+        });
+      });
+    }
+
+    // Physics Animation Loop
+    function animate() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, width, height);
+
+      // Render faint geometric circuit connection lines between close neighbor particles
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < particles.length; i += 2) {
+        const p1 = particles[i];
+        for (let j = i + 1; j < Math.min(i + 5, particles.length); j++) {
+          const p2 = particles[j];
+          const dx = p1.x - p2.x;
+          const dy = p1.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 28) {
+            ctx.strokeStyle = p1.isAccent ? 'rgba(250, 150, 0, 0.25)' : 'rgba(250, 0, 25, 0.15)';
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Update & render particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // Distance to mouse
+        const dx = mouse.x - p.x;
+        const dy = mouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        // Repulsion physics
+        if (dist < mouse.radius) {
+          const force = (mouse.radius - dist) / mouse.radius;
+          const angle = Math.atan2(dy, dx);
+          p.vx -= Math.cos(angle) * force * 7;
+          p.vy -= Math.sin(angle) * force * 7;
+        }
+
+        // Return spring physics towards target position (Hooke's Law)
+        const ox = p.ox - p.x;
+        const oy = p.oy - p.y;
+        p.vx += ox * 0.06;
+        p.vy += oy * 0.06;
+
+        // Damping / Friction
+        p.vx *= 0.85;
+        p.vy *= 0.85;
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Draw particle
+        ctx.save();
+        ctx.fillStyle = p.baseColor;
+        ctx.shadowColor = p.glowColor;
+        ctx.shadowBlur = p.isAccent ? 8 : 4;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    if (logoUrl) {
+      svgImage = new Image();
+      svgImage.onload = () => {
+        buildParticles();
+      };
+      svgImage.src = logoUrl;
+    }
+
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+    animate();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initParticleLogo);
+  } else {
+    initParticleLogo();
+  }
+</script>

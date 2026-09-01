@@ -1,0 +1,20 @@
+{
+  "name": "red-lion-labs",
+  "type": "module",
+  "version": "2.0.0",
+  "description": "Red Lion Labs - Architectural Precision Collides with Software Engineering",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^5.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  }
+}

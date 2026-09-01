@@ -1,0 +1,215 @@
+---
+import Layout from '../layouts/Layout.astro';
+import RepoSpiral from '../components/RepoSpiral.astro';
+import RepoList from '../components/RepoList.astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Live Portfolio & Repositories // Red Lion Labs" activePage="portfolio">
+  <div class="page-container container">
+    <!-- Breadcrumb & CAD Dimension Header -->
+    <div class="cad-dimension-line">
+      <span>TELEMETRY-STREAM: GITHUB_REPOS // PROFILE: @danieldleao</span>
+    </div>
+
+    <!-- Portfolio Header & Mode Switcher -->
+    <div class="portfolio-header-box hud-panel cad-frame">
+      <div class="header-left">
+        <div class="section-tag">
+          <span>PORTFOLIO DIRECTORY // DYNAMIC TELEMETRY</span>
+        </div>
+        <h1 class="portfolio-title">GITHUB <span class="highlight-yellow">REPOSITORIES</span></h1>
+        <p class="portfolio-desc">
+          A live computational mirror of public software repositories, parametric BIM tools, algorithmic experiments, and technical documentation.
+        </p>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="mode-switcher-group">
+        <span class="switcher-label">PRESENTATION MODE:</span>
+        <div class="switcher-buttons" id="view-mode-switcher">
+          <button class="mode-btn active" data-mode="spiral" id="btn-mode-spiral">
+            <span class="btn-icon">◎</span>
+            <span>SPIRAL VIEW</span>
+          </button>
+          <button class="mode-btn" data-mode="list" id="btn-mode-list">
+            <span class="btn-icon">▦</span>
+            <span>LIST MATRIX</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mode Viewports -->
+    <div class="viewports-wrapper">
+      <!-- Spiral Mode Viewport -->
+      <div id="viewport-spiral" class="portfolio-view active">
+        <div class="view-instructions">
+          <span>INTERACTIVE 3D ORBIT: SCROLL WHEEL, DRAG, OR ARROW KEYS TO NAVIGATE TRAJECTORY</span>
+        </div>
+        <RepoSpiral />
+      </div>
+
+      <!-- List Mode Viewport -->
+      <div id="viewport-list" class="portfolio-view">
+        <RepoList />
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-container {
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .portfolio-header-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 3.5vw, 2.5rem);
+    margin-bottom: 2rem;
+  }
+
+  .portfolio-title {
+    margin-bottom: 0.5rem;
+  }
+
+  .portfolio-desc {
+    max-width: 600px;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .mode-switcher-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .switcher-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .switcher-buttons {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+    padding: 0.35rem;
+  }
+
+  .mode-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 0.6rem 1rem;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mode-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--border-dim);
+  }
+
+  .mode-btn.active {
+    background: var(--accent-primary);
+    color: #FFFFFF;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .mode-btn .btn-icon {
+    font-size: 0.9rem;
+  }
+
+  /* Viewports */
+  .viewports-wrapper {
+    position: relative;
+    min-height: 700px;
+  }
+
+  .portfolio-view {
+    display: none;
+    animation: fadeInView 0.3s ease forwards;
+  }
+
+  .portfolio-view.active {
+    display: block;
+  }
+
+  @keyframes fadeInView {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .view-instructions {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent-secondary);
+    text-align: center;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+</style>
+
+<script>
+  function initModeSwitcher() {
+    const btnSpiral = document.getElementById('btn-mode-spiral');
+    const btnList = document.getElementById('btn-mode-list');
+    const viewSpiral = document.getElementById('viewport-spiral');
+    const viewList = document.getElementById('viewport-list');
+
+    if (!btnSpiral || !btnList || !viewSpiral || !viewList) return;
+
+    function setMode(mode: 'spiral' | 'list') {
+      if (mode === 'spiral') {
+        btnSpiral?.classList.add('active');
+        btnList?.classList.remove('active');
+        viewSpiral?.classList.add('active');
+        viewList?.classList.remove('active');
+      } else {
+        btnList?.classList.add('active');
+        btnSpiral?.classList.remove('active');
+        viewList?.classList.add('active');
+        viewSpiral?.classList.remove('active');
+      }
+      sessionStorage.setItem('rll_portfolio_mode', mode);
+    }
+
+    btnSpiral.addEventListener('click', () => setMode('spiral'));
+    btnList.addEventListener('click', () => setMode('list'));
+
+    // Check URL query param or session storage
+    const urlParams = new URLSearchParams(window.location.search);
+    const viewParam = urlParams.get('view');
+    const savedMode = sessionStorage.getItem('rll_portfolio_mode');
+
+    if (viewParam === 'list' || savedMode === 'list') {
+      setMode('list');
+    } else {
+      setMode('spiral');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initModeSwitcher);
+  } else {
+    initModeSwitcher();
+  }
+</script>

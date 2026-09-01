@@ -1,0 +1,119 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CadCursor from '../components/CadCursor.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  activePage?: 'main' | 'about' | 'portfolio' | 'contacts';
+  showHeader?: boolean;
+}
+
+const {
+  title = 'Red Lion Labs // Architectural Precision & Software Engineering',
+  description = 'Red Lion Labs is a digital sandbox, creative workshop, and developer portfolio exploring the collision zone between architectural CAD/BIM precision and software engineering.',
+  activePage = 'main',
+  showHeader = true,
+} = Astro.props;
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    <!-- Open Graph & Social -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={`${baseUrl}/Img/rlHero.png`} />
+    
+    <!-- Theme Prevention of Flash -->
+    <script is:inline>
+      const savedTheme = localStorage.getItem('rll-theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+        document.documentElement.setAttribute('data-theme', 'dark'); // default brand preference is dark
+      }
+    </script>
+
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <!-- CAD Network Grid & Visual Overlays -->
+    <div class="cad-grid-bg" aria-hidden="true"></div>
+    <div class="cad-grid-overlay" aria-hidden="true"></div>
+    <div class="cad-scanlines" aria-hidden="true"></div>
+
+    <!-- Custom CAD Crosshair Cursor -->
+    <CadCursor />
+
+    <!-- Application Shell -->
+    <div class="site-wrapper">
+      {showHeader && <Header activePage={activePage} />}
+      
+      <main id="main-content" class="main-content">
+        <slot />
+      </main>
+
+      <Footer />
+    </div>
+
+    <!-- Live Telemetry Status Bar at very bottom corner -->
+    <div class="hud-floating-status" aria-hidden="true">
+      <span class="hud-status-node">NODE: RLL-TORONTO</span>
+      <span class="hud-status-spec">SPEC 2.0</span>
+    </div>
+  </body>
+</html>
+
+<style>
+  .site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hud-floating-status {
+    position: fixed;
+    bottom: 8px;
+    right: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-muted);
+    background: rgba(18, 18, 18, 0.7);
+    border: 1px solid var(--border-dim);
+    padding: 2px 6px;
+    pointer-events: none;
+    z-index: 900;
+    display: flex;
+    gap: 6px;
+    letter-spacing: 0.08em;
+  }
+
+  [data-theme="light"] .hud-floating-status {
+    background: rgba(220, 220, 220, 0.8);
+  }
+
+  .hud-status-spec {
+    color: var(--accent-secondary);
+  }
+</style>

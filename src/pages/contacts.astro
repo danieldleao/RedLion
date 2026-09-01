@@ -1,0 +1,571 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="Contact Terminal // Red Lion Labs" activePage="contacts">
+  <div class="page-container container">
+    <div class="cad-dimension-line">
+      <span>TRANSMISSION-NODE: CONTACT_TERMINAL // CHANNEL: ENCRYPTED</span>
+    </div>
+
+    <div class="contact-layout-grid">
+      <!-- Left: Contact Form Console -->
+      <div class="contact-form-card hud-panel cad-frame">
+        <div class="form-header">
+          <div class="section-tag">
+            <span>COMMUNICATION INTERFACE</span>
+          </div>
+          <h1 class="contact-heading">SEND ME A <span class="highlight-yellow">MESSAGE</span></h1>
+          <p class="form-subtitle">
+            Initiate direct transmission for software inquiries, collaborative engineering, co-op opportunities, or architectural design consultation.
+          </p>
+        </div>
+
+        <form id="contact-transmission-form" class="cad-contact-form" novalidate>
+          <!-- Full Name -->
+          <div class="form-field-group">
+            <label for="contact-name">
+              <span class="label-code">01.</span>
+              <span class="label-text">FULL NAME</span>
+              <span class="label-req">*</span>
+            </label>
+            <div class="input-wrap">
+              <input type="text" id="contact-name" name="name" required placeholder="e.g. John Doe / Engineering Lead" autocomplete="name" />
+              <span class="cad-input-corner"></span>
+            </div>
+            <span class="field-error" id="name-error">PLEASE ENTER YOUR FULL NAME</span>
+          </div>
+
+          <!-- Email -->
+          <div class="form-field-group">
+            <label for="contact-email">
+              <span class="label-code">02.</span>
+              <span class="label-text">E-MAIL ADDRESS</span>
+              <span class="label-req">*</span>
+            </label>
+            <div class="input-wrap">
+              <input type="email" id="contact-email" name="email" required placeholder="e.g. j.doe@organization.com" autocomplete="email" />
+              <span class="cad-input-corner"></span>
+            </div>
+            <span class="field-error" id="email-error">VALID EMAIL REQUIRED (user@domain.com)</span>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-field-group">
+            <label for="contact-phone">
+              <span class="label-code">03.</span>
+              <span class="label-text">PHONE NUMBER</span>
+              <span class="label-opt">(OPTIONAL)</span>
+            </label>
+            <div class="input-wrap">
+              <input type="tel" id="contact-phone" name="phone" placeholder="+1 (###) ###-####" autocomplete="tel" />
+              <span class="cad-input-corner"></span>
+            </div>
+          </div>
+
+          <!-- Message -->
+          <div class="form-field-group">
+            <label for="contact-message">
+              <span class="label-code">04.</span>
+              <span class="label-text">TRANSMISSION MESSAGE</span>
+              <span class="label-req">*</span>
+            </label>
+            <div class="input-wrap">
+              <textarea id="contact-message" name="message" rows="5" required placeholder="Detail project parameters, architectural specifications, or engineering scope..."></textarea>
+              <span class="cad-input-corner"></span>
+            </div>
+            <span class="field-error" id="message-error">MESSAGE CANNOT BE EMPTY (MIN 10 CHARACTERS)</span>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <button type="submit" class="cad-btn cad-btn-primary" id="form-submit-btn">
+              <span>TRANSMIT MESSAGE ↗</span>
+            </button>
+            <button type="button" class="cad-btn cad-btn-secondary" id="form-mailto-btn">
+              <span>OPEN IN DEFAULT EMAIL CLIENT</span>
+            </button>
+          </div>
+
+          <!-- Transmission Status Feedback Banner -->
+          <div id="transmission-status-banner" class="status-banner">
+            <span class="status-text" id="status-banner-text">STATUS: READY FOR TRANSMISSION</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Right: Technical Coordinates & Direct Telemetry Box -->
+      <div class="contact-telemetry-col">
+        <!-- Telemetry Card -->
+        <div class="hud-panel cad-frame telemetry-box">
+          <div class="box-header">
+            <span class="box-tag">LOCATION TELEMETRY</span>
+            <h4>SPATIAL COORDINATES</h4>
+          </div>
+
+          <div class="coord-details-list">
+            <div class="coord-row">
+              <span class="coord-key">LOCATION:</span>
+              <span class="coord-val highlight-yellow">Ajax, Ontario, Canada</span>
+            </div>
+            <div class="coord-row">
+              <span class="coord-key">LATITUDE:</span>
+              <span class="coord-val">43.8509° N</span>
+            </div>
+            <div class="coord-row">
+              <span class="coord-key">LONGITUDE:</span>
+              <span class="coord-val">79.0204° W</span>
+            </div>
+            <div class="coord-row">
+              <span class="coord-key">TIME ZONE:</span>
+              <span class="coord-val">EST / EDT (UTC-4 / UTC-5)</span>
+            </div>
+          </div>
+
+          <!-- Direct Communication Channels -->
+          <div class="direct-channels">
+            <span class="channels-title">DIRECT CHANNELS:</span>
+            
+            <div class="channel-item">
+              <div class="channel-info">
+                <span class="ch-lbl">PRIMARY EMAIL:</span>
+                <span class="ch-val" id="email-text">danieldleao@gmail.com</span>
+              </div>
+              <button class="copy-channel-btn" data-copy="danieldleao@gmail.com" title="Copy Email Address">
+                <span>COPY</span>
+              </button>
+            </div>
+
+            <div class="channel-item">
+              <div class="channel-info">
+                <span class="ch-lbl">GITHUB PROFILE:</span>
+                <a href="https://github.com/danieldleao" target="_blank" rel="noopener noreferrer" class="ch-link">
+                  github.com/danieldleao ↗
+                </a>
+              </div>
+            </div>
+
+            <div class="channel-item">
+              <div class="channel-info">
+                <span class="ch-lbl">LINKEDIN NETWORK:</span>
+                <a href="https://www.linkedin.com/in/danieldoroleao/" target="_blank" rel="noopener noreferrer" class="ch-link">
+                  linkedin.com/in/danieldoroleao ↗
+                </a>
+              </div>
+            </div>
+
+            <div class="channel-item">
+              <div class="channel-info">
+                <span class="ch-lbl">CAREER ARCHIVE:</span>
+                <a href="https://sites.google.com/view/danieldoroleao" target="_blank" rel="noopener noreferrer" class="ch-link">
+                  sites.google.com/view/danieldoroleao ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Image Frame -->
+        <div class="contact-image-frame hud-panel cad-frame">
+          <img src={`${baseUrl}/Img/rlContact.jpg`} alt="Red Lion Labs Direct Contact Interface" class="contact-img" />
+          <div class="img-telemetry-tag">CAD-COMMS-TERMINAL</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .page-container {
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .contact-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  @media (min-width: 960px) {
+    .contact-layout-grid {
+      grid-template-columns: 1.25fr 0.75fr;
+    }
+  }
+
+  .contact-form-card {
+    padding: clamp(1.5rem, 4vw, 3rem);
+  }
+
+  .form-header {
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 1.25rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .contact-heading {
+    margin-bottom: 0.5rem;
+  }
+
+  .form-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .cad-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .form-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-field-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+  }
+
+  .label-code {
+    color: var(--accent-primary);
+    font-weight: bold;
+  }
+
+  .label-req {
+    color: var(--accent-primary);
+  }
+
+  .label-opt {
+    color: var(--text-muted);
+    font-size: 0.65rem;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-wrap input,
+  .input-wrap textarea {
+    width: 100%;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+    padding: 0.85rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .input-wrap input:focus,
+  .input-wrap textarea:focus {
+    border-color: var(--accent-primary);
+    background: rgba(250, 0, 25, 0.04);
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .input-wrap input::placeholder,
+  .input-wrap textarea::placeholder {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .cad-input-corner {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 6px;
+    height: 6px;
+    border-bottom: 2px solid var(--accent-primary);
+    border-right: 2px solid var(--accent-primary);
+    pointer-events: none;
+  }
+
+  .field-error {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent-primary);
+    display: none;
+  }
+
+  .form-field-group.has-error .field-error {
+    display: block;
+  }
+
+  .form-field-group.has-error input,
+  .form-field-group.has-error textarea {
+    border-color: var(--accent-primary);
+  }
+
+  .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .status-banner {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-tertiary);
+    margin-top: 0.5rem;
+  }
+
+  .status-banner.success {
+    display: block;
+    border-color: var(--accent-secondary);
+    background: rgba(250, 150, 0, 0.08);
+    color: var(--accent-secondary);
+  }
+
+  /* Telemetry Column */
+  .contact-telemetry-col {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .telemetry-box {
+    padding: 1.75rem;
+  }
+
+  .box-header {
+    border-bottom: 1px solid var(--border-dim);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .box-tag {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--accent-secondary);
+    letter-spacing: 0.1em;
+  }
+
+  .coord-details-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+
+  .coord-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed var(--border-dim);
+    padding-bottom: 0.35rem;
+  }
+
+  .coord-key {
+    color: var(--text-muted);
+  }
+
+  .coord-val {
+    color: var(--text-primary);
+  }
+
+  .direct-channels {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    border-top: 1px solid var(--border-dim);
+    padding-top: 1.25rem;
+  }
+
+  .channels-title {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    color: var(--accent-primary);
+    letter-spacing: 0.08em;
+  }
+
+  .channel-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-dim);
+    padding: 0.65rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .channel-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .ch-lbl {
+    color: var(--text-muted);
+    font-size: 0.65rem;
+  }
+
+  .ch-val {
+    color: var(--text-primary);
+  }
+
+  .ch-link {
+    color: var(--accent-secondary);
+    text-decoration: none;
+  }
+
+  .ch-link:hover {
+    color: var(--accent-primary);
+  }
+
+  .copy-channel-btn {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    padding: 0.25rem 0.55rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .copy-channel-btn:hover {
+    border-color: var(--accent-secondary);
+    color: var(--accent-secondary);
+  }
+
+  .contact-image-frame {
+    position: relative;
+    overflow: hidden;
+    padding: 0.75rem;
+  }
+
+  .contact-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: contrast(1.05);
+  }
+
+  .img-telemetry-tag {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--accent-secondary);
+    background: rgba(18, 18, 18, 0.85);
+    border: 1px solid var(--border-dim);
+    padding: 2px 6px;
+  }
+</style>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-transmission-form') as HTMLFormElement;
+    const nameInput = document.getElementById('contact-name') as HTMLInputElement;
+    const emailInput = document.getElementById('contact-email') as HTMLInputElement;
+    const phoneInput = document.getElementById('contact-phone') as HTMLInputElement;
+    const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement;
+    const mailtoBtn = document.getElementById('form-mailto-btn');
+    const statusBanner = document.getElementById('transmission-status-banner');
+    const statusText = document.getElementById('status-banner-text');
+
+    if (!form) return;
+
+    function validate(): boolean {
+      let isValid = true;
+
+      // Name
+      if (!nameInput.value.trim()) {
+        nameInput.closest('.form-field-group')?.classList.add('has-error');
+        isValid = false;
+      } else {
+        nameInput.closest('.form-field-group')?.classList.remove('has-error');
+      }
+
+      // Email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailInput.value.trim())) {
+        emailInput.closest('.form-field-group')?.classList.add('has-error');
+        isValid = false;
+      } else {
+        emailInput.closest('.form-field-group')?.classList.remove('has-error');
+      }
+
+      // Message
+      if (messageInput.value.trim().length < 10) {
+        messageInput.closest('.form-field-group')?.classList.add('has-error');
+        isValid = false;
+      } else {
+        messageInput.closest('.form-field-group')?.classList.remove('has-error');
+      }
+
+      return isValid;
+    }
+
+    function sendViaMailto() {
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const message = messageInput.value.trim();
+
+      const subject = encodeURIComponent(`[Red Lion Labs Transmission] Inception from ${name || 'Contact Form'}`);
+      const body = encodeURIComponent(
+        `TRANSMISSION LOG:\n--------------------------\nFROM: ${name}\nEMAIL: ${email}\nPHONE: ${phone || 'N/A'}\n\nMESSAGE:\n${message}\n--------------------------\nSent via Red Lion Labs Contact Interface`
+      );
+
+      window.location.href = `mailto:danieldleao@gmail.com?subject=${subject}&body=${body}`;
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!validate()) {
+        return;
+      }
+
+      // Trigger formatted transmission and show confirmation banner
+      sendViaMailto();
+
+      if (statusBanner && statusText) {
+        statusBanner.className = 'status-banner success';
+        statusText.textContent = 'TRANSMISSION READY: DEFAULT EMAIL CLIENT OPENED. ALL SYSTEMS NOMINAL.';
+      }
+    });
+
+    mailtoBtn?.addEventListener('click', sendViaMailto);
+
+    // Copy buttons
+    document.querySelectorAll('.copy-channel-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const text = btn.getAttribute('data-copy');
+        if (text) {
+          navigator.clipboard.writeText(text);
+          const span = btn.querySelector('span');
+          if (span) {
+            span.textContent = 'COPIED!';
+            setTimeout(() => { span.textContent = 'COPY'; }, 2000);
+          }
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initContactForm);
+  } else {
+    initContactForm();
+  }
+</script>

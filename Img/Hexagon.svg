@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" viewBox="0 0 49.3 57">
+  <!-- Generator: Adobe Illustrator 30.1.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 136)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+        stroke: #ff002b;
+        stroke-miterlimit: 1.93;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g id="svg1" inkscape:version="1.4.4 (dcaf3e7d9e, 2026-05-05)">
+    <sodipodi:namedview id="namedview1" bordercolor="#999999" borderopacity="1" inkscape:current-layer="layer1" inkscape:cx="1280" inkscape:cy="720.33698" inkscape:deskcolor="#d1d1d1" inkscape:document-units="px" inkscape:pagecheckerboard="0" inkscape:pageopacity="0" inkscape:showpageshadow="2" inkscape:window-height="1048" inkscape:window-maximized="1" inkscape:window-width="1920" inkscape:window-x="1920" inkscape:window-y="0" inkscape:zoom="0.46367188" pagecolor="#ffffff" showgrid="false">
+      <inkscape:grid id="grid3" color="#0099e5" dotted="false" empcolor="#0099e5" empopacity="0.30196078" empspacing="1" enabled="true" opacity="0.14901961" originx="0" originy="0" snapvisiblegridlinesonly="false" spacingx="1" spacingy="1" units="px" visible="false"/>
+    </sodipodi:namedview>
+    <path id="path587" class="st0" d="M24.65,1.25l23.6,13.63v27.25l-23.6,13.63L1.05,42.12V14.87L24.65,1.25Z" inkscape:flatsided="true" inkscape:randomized="0" inkscape:rounded="0" sodipodi:arg1="-1.5707963" sodipodi:arg2="-1.0471976" sodipodi:cx="501.73837" sodipodi:cy="501.73837" sodipodi:r1="57.047722" sodipodi:r2="49.404774" sodipodi:sides="6" sodipodi:type="star"/>
+  </g>
+</svg>

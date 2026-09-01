@@ -1,0 +1,330 @@
+---
+// CAD Crosshair Custom Cursor Component
+---
+
+<div id="cad-cursor-container" class="cad-cursor-wrapper" aria-hidden="true">
+  <!-- Crosshair Horizontal Line -->
+  <div class="cad-cursor-line cad-cursor-h"></div>
+  <!-- Crosshair Vertical Line -->
+  <div class="cad-cursor-line cad-cursor-v"></div>
+  
+  <!-- Central Target Reticle Box -->
+  <div class="cad-cursor-reticle">
+    <div class="reticle-box"></div>
+    <div class="reticle-dot"></div>
+  </div>
+
+  <!-- CAD Coordinates HUD Telemetry -->
+  <div class="cad-cursor-coords">
+    <span class="coord-val" id="cad-coord-x">X: 0000</span>
+    <span class="coord-sep">|</span>
+    <span class="coord-val" id="cad-coord-y">Y: 0000</span>
+    <span class="coord-snap" id="cad-snap-status">SNAP: OFF</span>
+  </div>
+
+  <!-- Spark / Particle Canvas for CAD Sparks -->
+  <canvas id="cad-sparks-canvas" class="cad-sparks-canvas"></canvas>
+</div>
+
+<style>
+  .cad-cursor-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 99999;
+    mix-blend-mode: normal;
+    display: none; /* activated on pointermove on non-touch devices */
+    overflow: hidden;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cad-cursor-wrapper {
+      display: block;
+    }
+  }
+
+  .cad-cursor-line {
+    position: fixed;
+    background: rgba(200, 200, 200, 0.45);
+    pointer-events: none;
+    will-change: transform;
+    transition: background 0.15s ease;
+  }
+
+  [data-theme="light"] .cad-cursor-line {
+    background: rgba(25, 25, 25, 0.4);
+  }
+
+  .cad-cursor-h {
+    left: 0;
+    width: 100vw;
+    height: 1px;
+    top: 0;
+  }
+
+  .cad-cursor-v {
+    top: 0;
+    height: 100vh;
+    width: 1px;
+    left: 0;
+  }
+
+  .cad-cursor-reticle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    margin-top: -12px;
+    margin-left: -12px;
+    pointer-events: none;
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease;
+  }
+
+  .reticle-box {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--accent-primary, #FA0019);
+    background: rgba(250, 0, 25, 0.08);
+    transition: all 0.15s ease;
+  }
+
+  .reticle-dot {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: var(--accent-primary, #FA0019);
+  }
+
+  .cad-cursor-coords {
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: 14px;
+    margin-left: 14px;
+    font-family: var(--font-mono, monospace);
+    font-size: 0.65rem;
+    line-height: 1;
+    color: var(--accent-secondary, #FA9600);
+    background: rgba(18, 18, 18, 0.85);
+    border: 1px solid rgba(250, 150, 0, 0.3);
+    padding: 2px 5px;
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    will-change: transform;
+  }
+
+  [data-theme="light"] .cad-cursor-coords {
+    background: rgba(230, 230, 230, 0.9);
+    color: #7D0019;
+    border-color: rgba(125, 0, 25, 0.4);
+  }
+
+  .coord-sep {
+    opacity: 0.4;
+  }
+
+  .coord-snap {
+    color: var(--text-muted, #888);
+    font-size: 0.6rem;
+  }
+
+  /* Interactive Hover State (CAD Snap Lock) */
+  .cad-cursor-wrapper.is-hovering .reticle-box {
+    width: 20px;
+    height: 20px;
+    border-color: var(--accent-secondary, #FA9600);
+    border-width: 1.5px;
+    background: rgba(250, 150, 0, 0.18);
+    transform: rotate(45deg);
+    box-shadow: 0 0 10px rgba(250, 150, 0, 0.5);
+  }
+
+  .cad-cursor-wrapper.is-hovering .cad-cursor-line {
+    background: rgba(250, 150, 0, 0.7);
+  }
+
+  .cad-cursor-wrapper.is-hovering .coord-snap {
+    color: var(--accent-secondary, #FA9600);
+    font-weight: bold;
+  }
+
+  .cad-sparks-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99999;
+  }
+</style>
+
+<script>
+  // CAD Cursor Logic with High Precision Tracking & Spark Physics
+  function initCadCursor() {
+    // Only run on desktop devices that support fine hover
+    if (window.matchMedia('(hover: none) or (pointer: coarse)').matches) {
+      return;
+    }
+
+    const wrapper = document.getElementById('cad-cursor-container');
+    if (!wrapper) return;
+
+    const lineH = wrapper.querySelector('.cad-cursor-h') as HTMLElement;
+    const lineV = wrapper.querySelector('.cad-cursor-v') as HTMLElement;
+    const reticle = wrapper.querySelector('.cad-cursor-reticle') as HTMLElement;
+    const coords = wrapper.querySelector('.cad-cursor-coords') as HTMLElement;
+    const coordX = document.getElementById('cad-coord-x');
+    const coordY = document.getElementById('cad-coord-y');
+    const snapStatus = document.getElementById('cad-snap-status');
+    const sparksCanvas = document.getElementById('cad-sparks-canvas') as HTMLCanvasElement;
+    const ctx = sparksCanvas?.getContext('2d');
+
+    if (!lineH || !lineV || !reticle || !coords) return;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let currentX = mouseX;
+    let currentY = mouseY;
+    let isHovering = false;
+    let isVisible = false;
+
+    // Sparks simulation
+    interface Spark {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      life: number;
+      maxLife: number;
+      size: number;
+      color: string;
+    }
+
+    const sparks: Spark[] = [];
+
+    function resizeCanvas() {
+      if (sparksCanvas) {
+        sparksCanvas.width = window.innerWidth;
+        sparksCanvas.height = window.innerHeight;
+      }
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas, { passive: true });
+
+    function createSparks(x: number, y: number, count = 12) {
+      const colors = ['#FA0019', '#FA9600', '#FFFFFF', '#FFAA33'];
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.5 + Math.random() * 4.5;
+        sparks.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          maxLife: 20 + Math.random() * 20,
+          size: 1 + Math.random() * 2.5,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+    }
+
+    function updatePosition(x: number, y: number) {
+      const px = Math.round(x);
+      const py = Math.round(y);
+      lineH.style.transform = `translateY(${py}px)`;
+      lineV.style.transform = `translateX(${px}px)`;
+      reticle.style.transform = `translate(${px}px, ${py}px)`;
+      coords.style.transform = `translate(${px}px, ${py}px)`;
+
+      if (coordX) coordX.textContent = `X: ${String(px).padStart(4, '0')}`;
+      if (coordY) coordY.textContent = `Y: ${String(py).padStart(4, '0')}`;
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!isVisible) {
+        isVisible = true;
+        wrapper.style.display = 'block';
+      }
+      updatePosition(mouseX, mouseY);
+    }, { passive: true });
+
+    window.addEventListener('mousedown', (e) => {
+      createSparks(e.clientX, e.clientY, 16);
+    }, { passive: true });
+
+    // Target detection for CAD Snap
+    document.addEventListener('mouseover', (e) => {
+      const target = (e.target as HTMLElement)?.closest('a, button, input, textarea, select, [data-cad-snap], .hud-panel, .tech-badge');
+      if (target) {
+        if (!isHovering) {
+          isHovering = true;
+          wrapper.classList.add('is-hovering');
+          if (snapStatus) snapStatus.textContent = 'SNAP: LOCK';
+          createSparks(mouseX, mouseY, 5); // subtle acquisition spark
+        }
+      } else {
+        if (isHovering) {
+          isHovering = false;
+          wrapper.classList.remove('is-hovering');
+          if (snapStatus) snapStatus.textContent = 'SNAP: OFF';
+        }
+      }
+    }, { passive: true });
+
+    // Render loop for sparks physics
+    function render() {
+      // Render sparks
+      if (ctx && sparksCanvas) {
+        ctx.clearRect(0, 0, sparksCanvas.width, sparksCanvas.height);
+        for (let i = sparks.length - 1; i >= 0; i--) {
+          const s = sparks[i];
+          s.x += s.vx;
+          s.y += s.vy;
+          s.vy += 0.08; // gravity
+          s.life -= 1;
+
+          if (s.life <= 0) {
+            sparks.splice(i, 1);
+            continue;
+          }
+
+          const alpha = s.life / s.maxLife;
+          ctx.save();
+          ctx.fillStyle = s.color;
+          ctx.globalAlpha = alpha;
+          ctx.shadowColor = s.color;
+          ctx.shadowBlur = 4;
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  // Initialize on page load and view transitions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCadCursor);
+  } else {
+    initCadCursor();
+  }
+</script>

@@ -1,0 +1,315 @@
+---
+// 3-Second Startup Logo Animation / Diagnostic Boot Sequence
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<div id="boot-sequence" class="boot-overlay" aria-label="System Boot Sequence">
+  <div class="boot-container">
+    <!-- Outer CAD Target Ring -->
+    <div class="boot-reticle">
+      <div class="reticle-ring-outer"></div>
+      <div class="reticle-ring-inner"></div>
+      <div class="reticle-axis-h"></div>
+      <div class="reticle-axis-v"></div>
+    </div>
+
+    <!-- Geometric Red Lion Logo -->
+    <div class="boot-logo-box">
+      <img src={`${baseUrl}/Img/RedLionLogo-OutLine.svg`} alt="Red Lion Labs Vector Logo" class="boot-lion-img" />
+    </div>
+
+    <!-- Title & Boot Readout -->
+    <div class="boot-text-area">
+      <h1 class="boot-title">RED LION <span class="boot-sub">LABS</span></h1>
+      <div class="boot-terminal-log" id="boot-log">
+        <span class="log-line">> RLL-BOOTLOADER V2.0 STARTUP...</span>
+      </div>
+      
+      <!-- Progress Bar -->
+      <div class="boot-progress-frame">
+        <div class="boot-progress-bar" id="boot-progress"></div>
+      </div>
+    </div>
+
+    <!-- Skip Button -->
+    <button class="boot-skip-btn" id="boot-skip-btn" aria-label="Skip Intro Animation">
+      <span>[ SKIP SEQUENCE // ESC ]</span>
+    </button>
+  </div>
+</div>
+
+<style>
+  .boot-overlay {
+    position: fixed;
+    inset: 0;
+    background: #191919;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+    overflow: hidden;
+  }
+
+  .boot-overlay.is-finished {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .boot-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2rem;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+  }
+
+  /* CAD Reticle Rings */
+  .boot-reticle {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    pointer-events: none;
+  }
+
+  .reticle-ring-outer {
+    position: absolute;
+    inset: 0;
+    border: 1px dashed rgba(250, 0, 25, 0.35);
+    border-radius: 50%;
+    animation: rotateClockwise 12s linear infinite;
+  }
+
+  .reticle-ring-inner {
+    position: absolute;
+    inset: 30px;
+    border: 1px solid rgba(250, 150, 0, 0.25);
+    border-radius: 50%;
+    animation: rotateCounter 8s linear infinite;
+  }
+
+  .reticle-axis-h {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    right: -20px;
+    height: 1px;
+    background: rgba(200, 200, 200, 0.15);
+  }
+
+  .reticle-axis-v {
+    position: absolute;
+    left: 50%;
+    top: -20px;
+    bottom: -20px;
+    width: 1px;
+    background: rgba(200, 200, 200, 0.15);
+  }
+
+  @keyframes rotateClockwise {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes rotateCounter {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+  }
+
+  /* Logo Graphic */
+  .boot-logo-box {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 1.5rem;
+  }
+
+  .boot-lion-img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 15px rgba(250, 0, 25, 0.6));
+    animation: pulseLogo 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseLogo {
+    from { transform: scale(0.96); filter: drop-shadow(0 0 10px rgba(250, 0, 25, 0.4)); }
+    to { transform: scale(1.02); filter: drop-shadow(0 0 25px rgba(250, 0, 25, 0.9)); }
+  }
+
+  /* Circuit Line Drawing Animations */
+  .circuit-head polygon, .circuit-head path, .circuit-head line {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: drawCircuit 2.2s ease forwards;
+  }
+
+  .circuit-head circle {
+    opacity: 0;
+    animation: fadeInCircle 0.5s ease 1.2s forwards;
+  }
+
+  @keyframes drawCircuit {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes fadeInCircle {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Typography */
+  .boot-text-area {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  .boot-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    letter-spacing: 0.15em;
+    color: #FA0019;
+    text-shadow: 0 0 12px rgba(250, 0, 25, 0.5);
+    margin-bottom: 0.5rem;
+  }
+
+  .boot-sub {
+    color: #FA9600;
+  }
+
+  .boot-terminal-log {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #C8C8C8;
+    height: 24px;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .boot-progress-frame {
+    width: 100%;
+    height: 4px;
+    background: rgba(200, 200, 200, 0.1);
+    border: 1px solid rgba(250, 0, 25, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .boot-progress-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #FA0019, #FA9600);
+    box-shadow: 0 0 8px #FA0019;
+    transition: width 0.1s linear;
+  }
+
+  .boot-skip-btn {
+    position: relative;
+    z-index: 3;
+    margin-top: 2rem;
+    background: transparent;
+    border: 1px solid rgba(200, 200, 200, 0.2);
+    color: rgba(200, 200, 200, 0.6);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s ease;
+  }
+
+  .boot-skip-btn:hover {
+    color: #FA9600;
+    border-color: #FA9600;
+    box-shadow: 0 0 10px rgba(250, 150, 0, 0.3);
+  }
+</style>
+
+<script>
+  function runBootSequence() {
+    const overlay = document.getElementById('boot-sequence');
+    const logElem = document.getElementById('boot-log');
+    const progressBar = document.getElementById('boot-progress');
+    const skipBtn = document.getElementById('boot-skip-btn');
+
+    if (!overlay) return;
+
+    // Check session storage to avoid annoying repeated 3s intro if user navigated internally
+    const hasSeenIntro = sessionStorage.getItem('rll_intro_seen');
+    if (hasSeenIntro) {
+      overlay.style.display = 'none';
+      return;
+    }
+
+    const logMessages = [
+      { time: 200, text: '> INITIALIZING RLL-CORE V2.0...' },
+      { time: 800, text: '> LOADING CAD-BIM MATRIX ENGINES...' },
+      { time: 1500, text: '> SYNCING PARAMETRIC GEOMETRY PIPELINE...' },
+      { time: 2200, text: '> VERIFYING GITHUB TELEMETRY DATA...' },
+      { time: 2800, text: '> ACCESS GRANTED. SYSTEM READY.' }
+    ];
+
+    let startTime = Date.now();
+    const totalDuration = 3000; // ~3 seconds
+
+    function update() {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(100, (elapsed / totalDuration) * 100);
+
+      if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+      }
+
+      // Update log text
+      for (const msg of logMessages) {
+        if (elapsed >= msg.time && logElem) {
+          logElem.textContent = msg.text;
+        }
+      }
+
+      if (elapsed < totalDuration) {
+        requestAnimationFrame(update);
+      } else {
+        finishBoot();
+      }
+    }
+
+    function finishBoot() {
+      sessionStorage.setItem('rll_intro_seen', 'true');
+      overlay.classList.add('is-finished');
+      setTimeout(() => {
+        overlay.style.display = 'none';
+      }, 600);
+    }
+
+    // Skip handlers
+    if (skipBtn) {
+      skipBtn.addEventListener('click', finishBoot);
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
+        finishBoot();
+      }
+    });
+
+    requestAnimationFrame(update);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runBootSequence);
+  } else {
+    runBootSequence();
+  }
+</script>
